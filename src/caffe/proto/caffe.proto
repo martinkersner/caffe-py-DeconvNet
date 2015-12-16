@@ -416,6 +416,12 @@ message TransformationParameter {
   optional bool force_gray = 7 [default = false];
 }
 
+// Martin Kersner, 2015/12/16
+message SelectSegBinaryParameter {
+  optional uint32 cls_label_base = 1 [default = 0];
+}
+
+
 // Message that stores parameters shared by loss layers
 message LossParameter {
   // If specified, ignore instances with the given label.
@@ -472,6 +478,30 @@ message ArgMaxParameter {
   // By default ArgMaxLayer maximizes over the flattened trailing dimensions
   // for each index of the first / num dimension.
   optional int32 axis = 3;
+}
+
+// Martin Kersner, 2015/12/16
+// Message that stores parameters used by BN (Batch Normalization)  layer
+message BinaryAccuracyParameter {
+  enum AccuracyMode {
+    Accuracy = 0;
+    Precision = 1;
+    Recall = 2;
+    F_measure = 3; 
+  }
+  optional AccuracyMode accuracy_mode = 1 [default = Accuracy];
+}
+
+// Martin Kersner, 2015/12/16
+// Message that stores parameters used by BN (Batch Normalization)  layer
+message BNParameter {
+  enum BNMode {
+    LEARN = 0;
+    INFERENCE = 1;
+  }
+  optional BNMode bn_mode = 3 [default = LEARN];
+  optional FillerParameter scale_filler = 1;  // The filler for the scale
+  optional FillerParameter shift_filler = 2;  // The filler for the shift
 }
 
 message ConcatParameter {
@@ -629,6 +659,29 @@ message EltwiseParameter {
   optional bool stable_prod_grad = 3 [default = true];
 }
 
+// Martin Kersner, 2015/12/16
+// Message that stores parameters used by EltwiseAccuracyLayer
+message EltwiseAccuracyParameter {
+  // When computing Eltwise Accuracy, count as correct by comparing the true label to
+  // the top k scoring classes.  By default, only compare to the top scoring
+  // class (i.e. argmax).
+  optional uint32 top_k = 1 [default = 1];
+  // If specified, ignore instances with the given label.
+  optional int32 ignore_label = 2;
+}
+
+// Martin Kersner, 2015/12/16
+message RedAccuracyParameter {
+  // When computing Red Accuracy, count as correct by comparing the true label to
+  // the top k scoring classes.  By default, only compare to the top scoring
+  // class (i.e. argmax).
+  optional uint32 top_k = 1 [default = 1];
+  // If specified, ignore instances with the given label.
+  optional int32 ignore_label = 2;
+  // number of classes in ground truth label
+  optional uint32 class_num = 3;
+}
+
 // Message that stores parameters used by EmbedLayer
 message EmbedParameter {
   optional uint32 num_output = 1; // The number of outputs for the layer
@@ -710,6 +763,19 @@ message ImageDataParameter {
   optional uint32 new_width = 10 [default = 0];
   // Specify if the images are color or gray
   optional bool is_color = 11 [default = true];
+
+  // Martin Kersner, 2015/12/16
+  // This is the value seg for pixels or images where we don't know the label 
+  optional int32 ignore_label = 15 [default = 255];
+  optional int32 other_object_label = 17 [default = 0];
+  enum LabelType {
+    NONE = 0;
+    IMAGE = 1;
+    PIXEL = 2;
+  }
+  optional LabelType label_type = 16 [default = IMAGE];
+  //
+
   // DEPRECATED. See TransformationParameter. For data pre-processing, we can do
   // simple scaling and subtracting the data mean, if provided. Note that the
   // mean subtraction is always carried out before scaling.
@@ -722,6 +788,11 @@ message ImageDataParameter {
   // data.
   optional bool mirror = 6 [default = false];
   optional string root_folder = 12 [default = ""];
+
+  // Martin Kersner, 2015/12/16
+  optional bool has_label = 13 [default = true];
+  optional int32 max_labels = 14 [default = 1];
+  //
 }
 
 message InfogainLossParameter {
@@ -823,6 +894,12 @@ message PowerParameter {
   optional float scale = 2 [default = 1.0];
   optional float shift = 3 [default = 0.0];
 }
+
+// Martin Kersner, 2015/12/16
+message RedSoftmaxWithLossParameter {
+  // number of classes in ground truth label
+  optional uint32 class_num = 1;
+} 
 
 message PythonParameter {
   optional string module = 1;
@@ -1005,6 +1082,42 @@ message ThresholdParameter {
   optional float threshold = 1 [default = 0]; // Strictly positive values
 }
 
+// Martin Kersner, 2015/12/16
+// Message that stores parameters used by PoolingLayer
+message UnpoolingParameter {
+  enum UnpoolMethod {
+    MAX = 0;
+    AVE = 1;
+    TILE= 2;
+  }
+  optional UnpoolMethod unpool = 1 [default = MAX]; // The pooling method
+  // Pad, kernel size, and stride are all given as a single value for equal
+  // dimensions in height and width or as Y, X pairs.
+  optional uint32 pad = 4 [default = 0]; // The padding size (equal in Y, X)
+  optional uint32 pad_h = 9 [default = 0]; // The padding height
+  optional uint32 pad_w = 10 [default = 0]; // The padding width
+  optional uint32 kernel_size = 2; // The kernel size (square)
+  optional uint32 kernel_h = 5; // The kernel height
+  optional uint32 kernel_w = 6; // The kernel width
+  optional uint32 stride = 3 [default = 1]; // The stride (equal in Y, X)
+  optional uint32 stride_h = 7; // The stride height
+  optional uint32 stride_w = 8; // The stride width
+  optional uint32 unpool_size = 12; // destined unpooled map size
+  optional uint32 unpool_h = 13; // destined unpooled map height
+  optional uint32 unpool_w = 14; // destined unpooled map width
+  enum Engine {
+    DEFAULT = 0;
+    CAFFE = 1;
+  }
+  optional Engine engine = 11 [default = DEFAULT];
+}
+
+// Martin Kersner, 2015/12/16
+// Message that stores parameters used by WindowClsDataLayer
+message WindowClsDataParameter { 
+  optional uint32 label_dim = 1 [default = 1];
+}
+
 message WindowDataParameter {
   // Specify the data source.
   optional string source = 1;
@@ -1066,6 +1179,8 @@ message V1LayerParameter {
     ABSVAL = 35;
     ACCURACY = 1;
     ARGMAX = 30;
+    BIN_ACCURACY = 49; // Martin Kersner, 2015/12/16
+    BN = 43; // Martin Kersner, 2015/12/16
     BNLL = 2;
     CONCAT = 3;
     CONTRASTIVE_LOSS = 37;
@@ -1073,9 +1188,11 @@ message V1LayerParameter {
     DATA = 5;
     DECONVOLUTION = 39;
     DROPOUT = 6;
+    DROPOUT_CHANNEL = 53; // Martin Kersner, 2015/12/16
     DUMMY_DATA = 32;
     EUCLIDEAN_LOSS = 7;
     ELTWISE = 25;
+    ELTWISE_ACCURACY = 41; // Martin Kersner, 2015/12/16
     EXP = 38;
     FLATTEN = 8;
     HDF5_DATA = 9;
@@ -1083,6 +1200,7 @@ message V1LayerParameter {
     HINGE_LOSS = 28;
     IM2COL = 11;
     IMAGE_DATA = 12;
+    IMAGE_SEG_DATA = 46; // Martin Kersner, 2015/12/16
     INFOGAIN_LOSS = 13;
     INNER_PRODUCT = 14;
     LRN = 15;
@@ -1091,7 +1209,10 @@ message V1LayerParameter {
     MVN = 34;
     POOLING = 17;
     POWER = 26;
+    RED_SOFTMAX_LOSS = 44; // Martin Kersner, 2015/12/16
+    RED_ACCURACY = 45; // Martin Kersner, 2015/12/16
     RELU = 18;
+    SELECT_SEG_BINARY = 52; // Martin Kersner, 2015/12/16
     SIGMOID = 19;
     SIGMOID_CROSS_ENTROPY_LOSS = 27;
     SILENCE = 36;
@@ -1100,7 +1221,12 @@ message V1LayerParameter {
     SPLIT = 22;
     SLICE = 33;
     TANH = 23;
+    UNPOOLING = 42; // Martin Kersner, 2015/12/16
     WINDOW_DATA = 24;
+    WINDOW_CLS_DATA = 50; // Martin Kersner, 2015/12/16
+    WINDOW_SEG_DATA = 47; // Martin Kersner, 2015/12/16
+    WINDOW_SEG_BINARY = 51; // Martin Kersner, 2015/12/16
+    WINDOW_INST_SEG_DATA = 48; // Martin Kersner, 2015/12/16
     THRESHOLD = 31;
   }
   optional LayerType type = 5;
@@ -1116,6 +1242,8 @@ message V1LayerParameter {
   repeated float loss_weight = 35;
   optional AccuracyParameter accuracy_param = 27;
   optional ArgMaxParameter argmax_param = 23;
+  optional BinaryAccuracyParameter binary_accuracy_param = 48; // Martin Kersner, 2015/12/16
+  optional BNParameter bn_param = 45; // Martin Kersner, 2015/12/16
   optional ConcatParameter concat_param = 9;
   optional ContrastiveLossParameter contrastive_loss_param = 40;
   optional ConvolutionParameter convolution_param = 10;
@@ -1123,6 +1251,7 @@ message V1LayerParameter {
   optional DropoutParameter dropout_param = 12;
   optional DummyDataParameter dummy_data_param = 26;
   optional EltwiseParameter eltwise_param = 24;
+  optional EltwiseAccuracyParameter eltwise_accuracy_param = 43; // Martin Kersner, 2015/12/16
   optional ExpParameter exp_param = 41;
   optional HDF5DataParameter hdf5_data_param = 13;
   optional HDF5OutputParameter hdf5_output_param = 14;
@@ -1135,12 +1264,17 @@ message V1LayerParameter {
   optional MVNParameter mvn_param = 34;
   optional PoolingParameter pooling_param = 19;
   optional PowerParameter power_param = 21;
+  optional RedSoftmaxWithLossParameter red_softmax_loss_param = 46; // Martin Kersner, 2015/12/16
+  optional RedAccuracyParameter red_accuracy_param = 47; // Martin Kersner, 2015/12/16
   optional ReLUParameter relu_param = 30;
+  optional SelectSegBinaryParameter select_seg_binary_param = 50; // Martin Kersner, 2015/12/16
   optional SigmoidParameter sigmoid_param = 38;
   optional SoftmaxParameter softmax_param = 39;
   optional SliceParameter slice_param = 31;
   optional TanHParameter tanh_param = 37;
   optional ThresholdParameter threshold_param = 25;
+  optional UnpoolingParameter unpooling_param = 44; // Martin Kersner, 2015/12/16
+  optional WindowClsDataParameter window_cls_data_param = 49; // Martin Kersner, 2015/12/16
   optional WindowDataParameter window_data_param = 20;
   optional TransformationParameter transform_param = 36;
   optional LossParameter loss_param = 42;

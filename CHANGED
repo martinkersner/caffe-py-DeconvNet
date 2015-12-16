@@ -1,56 +1,57 @@
 git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25dee37194c7bcb9d52d0e42
 
-README.md
-future.sh
-include/caffe/common_layers.hpp                             class BNLayer
-include/caffe/data_layers.hpp                               class ImageDimPrefetchingDataLayer, ImageSegDataLayer, WindowSegDataLayer, WindowSegBinaryLayer, SelectSegBinaryLayer, WindowClsDataLayer, WindowInstSegDataLayer                                      
-include/caffe/data_transformer.hpp                          void TransformImgAndSeg
-include/caffe/loss_layers.hpp                               class BinaryAccuracyLayer, EltwiseAccuracyLayer, RedAccuracyLayer, RedSoftmaxWithLossLayer
-include/caffe/neuron_layers.hpp                             class DropoutChannelLayer, void Reshape, 3 short lines
-include/caffe/util/io.hpp                                   cv::Mat ReadImageToCVMatNearest, cv::Mat ReadImageToCVMat
-include/caffe/vision_layers.hpp                             class UnpoolingLayer
+* README.md
+* future.sh
 
-python/caffe/pycaffe.py                                     4 deleted lines
+* include/caffe/common_layers.hpp                             class BNLayer
+* include/caffe/data_layers.hpp                               class ImageDimPrefetchingDataLayer, ImageSegDataLayer, WindowSegDataLayer, WindowSegBinaryLayer, SelectSegBinaryLayer, WindowClsDataLayer, WindowInstSegDataLayer                                      
+* include/caffe/data_transformer.hpp                          void TransformImgAndSeg
+* include/caffe/loss_layers.hpp                               class BinaryAccuracyLayer, EltwiseAccuracyLayer, RedAccuracyLayer, RedSoftmaxWithLossLayer
+* include/caffe/neuron_layers.hpp                             class DropoutChannelLayer, void Reshape, 3 short lines
+* include/caffe/util/io.hpp                                   cv::Mat ReadImageToCVMatNearest, cv::Mat ReadImageToCVMat
+* include/caffe/vision_layers.hpp                             class UnpoolingLayer
 
-src/caffe/data_transformer.cpp
+* python/caffe/pycaffe.py                                     4 deleted lines
+
+* src/caffe/data_transformer.cpp
 
 
-src/caffe/layer_factory.cpp                                 Layer<Dtype>* GetUnpoolingLayer
+* src/caffe/layer_factory.cpp                                 Layer<Dtype>* GetUnpoolingLayer
 
-src/caffe/layers/base_data_layer.cpp                        void ImageDimPrefetchingDataLayer<DType>::LayerSetup, void ImageDimPrefetchingDataLayer<DType>::ForwardCPU, 2 one line macros
-src/caffe/layers/base_data_layer.cu                         void ImageDimPrefetchingDataLayer<Dtype>::Forward_gpu
+* src/caffe/layers/base_data_layer.cpp                        void ImageDimPrefetchingDataLayer<DType>::LayerSetup, void ImageDimPrefetchingDataLayer<DType>::ForwardCPU, 2 one line macros
+* src/caffe/layers/base_data_layer.cu                         void ImageDimPrefetchingDataLayer<Dtype>::Forward_gpu
 
-src/caffe/layers/binary_accuracy.cpp                        86 lines
+* src/caffe/layers/binary_accuracy.cpp                        86
 
-src/caffe/layers/bn_layer.cpp                               420 lines
-src/caffe/layers/bn_layer.cu                                324 lines
+* src/caffe/layers/bn_layer.cpp                               420
+* src/caffe/layers/bn_layer.cu                                324
 
-src/caffe/layers/dropout_channel_layer.cpp                  100
-src/caffe/layers/dropout_channel_layer.cu                   84
+* src/caffe/layers/dropout_channel_layer.cpp                  100
+* src/caffe/layers/dropout_channel_layer.cu                   84
 
-src/caffe/layers/eltwise_accuracy_layer.cpp                 86
-src/caffe/layers/image_seg_data_layer.cpp                   242
-src/caffe/layers/red_accuracy_layer.cpp                     112
-src/caffe/layers/red_softmax_loss_layer.cpp                 147
-src/caffe/layers/relu_layer.cpp                             void ReLULayer<Dtype>::Reshape, plus minor changes
-src/caffe/layers/relu_layer.cu                              __global__ void ReLUForward_With_Mask, plus some deletions and additions
-src/caffe/layers/select_seg_binary_layer.cpp                316
+* src/caffe/layers/eltwise_accuracy_layer.cpp                 86
+* src/caffe/layers/image_seg_data_layer.cpp                   242
+* src/caffe/layers/red_accuracy_layer.cpp                     112
+* src/caffe/layers/red_softmax_loss_layer.cpp                 147
+* src/caffe/layers/relu_layer.cpp                             void ReLULayer<Dtype>::Reshape, plus minor changes
+* src/caffe/layers/relu_layer.cu                              __global__ void ReLUForward_With_Mask, plus some deletions and additions
+* src/caffe/layers/select_seg_binary_layer.cpp                316
 
-src/caffe/layers/unpooling_layer.cpp                        336
-src/caffe/layers/unpooling_layer.cu                         293
+* src/caffe/layers/unpooling_layer.cpp                        336
+* src/caffe/layers/unpooling_layer.cu                         293
 
-src/caffe/layers/window_cls_data_layer.cpp                  309
-src/caffe/layers/window_inst_seg_data_layer.cpp             323
+* src/caffe/layers/window_cls_data_layer.cpp                  309
+* src/caffe/layers/window_inst_seg_data_layer.cpp             323
+* src/caffe/layers/window_seg_binary_layer.cpp                297
+* src/caffe/layers/window_seg_data_layer.cpp                  288 
 
-src/caffe/layers/window_seg_binary_layer.cpp                297
-src/caffe/layers/window_seg_data_layer.cpp                  288 
+* src/caffe/proto/caffe.proto                                 message BinaryAccuracyParameter, message SelectSegBinaryParameter, message BNParameter, message EltwiseAccuracyParameter, message RedAccuracyParameter, message RedSoftmaxWithLossParameter, message UnpoolingParameter, message WindowClsDataParameter, plus many small optinal lines
+>> added everything necessary, hopefully
 
-src/caffe/proto/caffe.proto                                 message BinaryAccuracyParameter, message SelectSegBinaryParameter, message BNParameter, message EltwiseAccuracyParameter, message RedAccuracyParameter, message RedSoftmaxWithLossParameter, message UnpoolingParameter, message WindowClsDataParameter, plus many small optinal lines
-
-src/caffe/util/io.cpp                                       cv::Mat ReadImageToCVMatNearest, plus small changes
+* src/caffe/util/io.cpp                                       cv::Mat ReadImageToCVMatNearest, plus small changes
 >> cv::Mat ReadImageToCVMat contain two additional parameters *img_width and *img_height
 >> cv::Mat ReadImageToDatum has additional encoding parameter, HAVE NOT CHANGED YET
 >> DecodeDatumToCVMat different interfaces, HAVE NOT changed yet
 
-src/caffe/util/math_functions.cpp                           template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
+* src/caffe/util/math_functions.cpp                           template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
 >> added line template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
