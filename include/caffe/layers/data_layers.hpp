@@ -11,7 +11,7 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/data_transformer.hpp"
-#include "caffe/dataset.hpp"
+#include "caffe/layers/dataset.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/filler.hpp"
 #include "caffe/internal_thread.hpp"
 #include "caffe/layer.hpp"
@@ -93,8 +93,10 @@ class DataLayer : public BasePrefetchingDataLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline Caffe:LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_DATA;
+  //virtual inline Caffe:LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_DATA;
+    return V1LayerParameter_LayerType_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int MinTopBlobs() const { return 1; }
@@ -123,8 +125,10 @@ class DummyDataLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {}
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_DUMMY_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_DUMMY_DATA;
+    return V1LayerParameter_LayerType_DUMMY_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int MinTopBlobs() const { return 1; }
@@ -158,8 +162,10 @@ class HDF5DataLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {}
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_HDF5_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_HDF5_DATA;
+    return V1LayerParameter_LayerType_HDF5_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int MinTopBlobs() const { return 1; }
@@ -198,8 +204,10 @@ class HDF5OutputLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {}
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_HDF5_OUTPUT;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_HDF5_OUTPUT;
+    return V1LayerParameter_LayerType_HDF5_OUTPUT; // Martin Kersner, 2015/12/16
   }
   // TODO: no limit on the number of blobs
   virtual inline int ExactNumBottomBlobs() const { return 2; }
@@ -238,8 +246,10 @@ class ImageDataLayer : public BasePrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 2; }
@@ -266,8 +276,10 @@ class MemoryDataLayer : public BaseDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_MEMORY_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_MEMORY_DATA;
+    return V1LayerParameter_LayerType_MEMORY_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 2; }
@@ -312,8 +324,10 @@ class WindowDataLayer : public BasePrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_WINDOW_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_WINDOW_DATA;
+    return V1LayerParameter_LayerType_WINDOW_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 2; }
@@ -380,8 +394,10 @@ class ImageSegDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 3; }
@@ -409,8 +425,10 @@ class WindowSegDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 3; }
@@ -444,8 +462,10 @@ class WindowSegBinaryLayer : public ImageDimPrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 3; }
@@ -479,8 +499,10 @@ class SelectSegBinaryLayer : public ImageDimPrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 3; }
@@ -518,8 +540,10 @@ class WindowClsDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 3; }
@@ -556,8 +580,10 @@ class WindowInstSegDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
   virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_IMAGE_DATA;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int ExactNumTopBlobs() const { return 3; }

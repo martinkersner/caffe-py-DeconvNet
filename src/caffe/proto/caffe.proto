@@ -421,7 +421,6 @@ message SelectSegBinaryParameter {
   optional uint32 cls_label_base = 1 [default = 0];
 }
 
-
 // Message that stores parameters shared by loss layers
 message LossParameter {
   // If specified, ignore instances with the given label.

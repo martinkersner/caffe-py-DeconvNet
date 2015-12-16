@@ -6,7 +6,7 @@
 #include "caffe/layer.hpp"
 #include "caffe/syncedmem.hpp"
 #include "caffe/util/math_functions.hpp"
-#include "caffe/vision_layers.hpp"
+#include "caffe/layers/vision_layers.hpp" // Martin Kersner, 2015/12/16
 
 namespace caffe {
 

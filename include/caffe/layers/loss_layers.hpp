@@ -8,7 +8,7 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/layer.hpp"
-#include "caffe/neuron_layers.hpp"
+#include "caffe/layers/neuron_layers.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/proto/caffe.pb.h"
 
 namespace caffe {

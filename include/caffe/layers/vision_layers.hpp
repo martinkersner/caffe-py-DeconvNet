@@ -7,11 +7,11 @@
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
-#include "caffe/common_layers.hpp"
-#include "caffe/data_layers.hpp"
+#include "caffe/layers/common_layers.hpp" // Martin Kersner, 2015/12/16
+#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/layer.hpp"
-#include "caffe/loss_layers.hpp"
-#include "caffe/neuron_layers.hpp"
+#include "caffe/layers/loss_layers.hpp" // Martin Kersner, 2015/12/16
+#include "caffe/layers/neuron_layers.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/proto/caffe.pb.h"
 
 namespace caffe {

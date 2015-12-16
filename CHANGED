@@ -4,22 +4,24 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 * future.sh
 
 * include/caffe/common_layers.hpp                             class BNLayer
->> copied
+>> copied to include/caffe/layers/
 
 * include/caffe/data_layers.hpp                               class ImageDimPrefetchingDataLayer, ImageSegDataLayer, WindowSegDataLayer, WindowSegBinaryLayer, SelectSegBinaryLayer, WindowClsDataLayer, WindowInstSegDataLayer                                      
->> copied
+>> copied to include/caffe/layers/
+>> added V1 to many functions
 
 * include/caffe/data_transformer.hpp                          void TransformImgAndSeg
 
 * include/caffe/loss_layers.hpp                               class BinaryAccuracyLayer, EltwiseAccuracyLayer, RedAccuracyLayer, RedSoftmaxWithLossLayer
->> copied
+>> copied to include/caffe/layers/
 
 * include/caffe/neuron_layers.hpp                             class DropoutChannelLayer, void Reshape, 3 short lines
->> copied
+>> copied to include/caffe/layers/
+>> added V1 to many functions
 
 * include/caffe/util/io.hpp                                   cv::Mat ReadImageToCVMatNearest, cv::Mat ReadImageToCVMat
 * include/caffe/vision_layers.hpp                             class UnpoolingLayer
->> copied
+>> copied to include/caffe/layers/
 
 * python/caffe/pycaffe.py                                     4 deleted lines
 
@@ -59,6 +61,7 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 
 * src/caffe/proto/caffe.proto                                 message BinaryAccuracyParameter, message SelectSegBinaryParameter, message BNParameter, message EltwiseAccuracyParameter, message RedAccuracyParameter, message RedSoftmaxWithLossParameter, message UnpoolingParameter, message WindowClsDataParameter, plus many small optinal lines
 >> added everything necessary, hopefully
+>> using V1LayerParameter which is DEPRECATED!
 
 * src/caffe/util/io.cpp                                       cv::Mat ReadImageToCVMatNearest, plus small changes
 >> cv::Mat ReadImageToCVMat contain two additional parameters *img_width and *img_height
@@ -69,5 +72,5 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> added line template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
 
 == ADDITIONAL =================
-* include/caffe/dataset.hpp
->> copied
+* include/caffe/dataset.hpp 
+>> copied to include/caffe/layers/
