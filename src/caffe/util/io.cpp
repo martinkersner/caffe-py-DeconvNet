@@ -54,7 +54,10 @@ bool ReadProtoFromBinaryFile(const char* filename, Message* proto) {
   CHECK_NE(fd, -1) << "File not found: " << filename;
   ZeroCopyInputStream* raw_input = new FileInputStream(fd);
   CodedInputStream* coded_input = new CodedInputStream(raw_input);
-  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit, 536870912);
+
+  // Martin Kersner, 2015/12/16
+  //coded_input->SetTotalBytesLimit(kProtoReadBytesLimit, 536870912);
+  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit, 1073741824);
 
   bool success = proto->ParseFromCodedStream(coded_input);
 
@@ -114,6 +117,35 @@ static bool matchExt(const std::string & fn,
   if ( en == "jpg" && ext == "jpeg" )
     return true;
   return false;
+}
+
+// Martin Kersner, 2015/12/16
+cv::Mat ReadImageToCVMatNearest(const string& filename,
+                         const int height, const int width, const bool is_color,
+                         int* img_height, int* img_width) {
+  cv::Mat cv_img;
+  int cv_read_flag = (is_color ? CV_LOAD_IMAGE_COLOR :
+    CV_LOAD_IMAGE_GRAYSCALE);
+  cv::Mat cv_img_origin = cv::imread(filename, cv_read_flag);
+  if (!cv_img_origin.data) {
+    LOG(ERROR) << "Could not open or find file " << filename;
+    return cv_img_origin;
+  }
+
+  if (height > 0 && width > 0) {
+    cv::resize(cv_img_origin, cv_img, cv::Size(width, height), 0, 0, cv::INTER_NEAREST);
+  } else {
+    cv_img = cv_img_origin;
+  }
+
+  if (img_height != NULL) {
+    *img_height = cv_img.rows;
+  }
+  if (img_width != NULL) {
+    *img_width = cv_img.cols;
+  }
+
+  return cv_img;
 }
 
 bool ReadImageToDatum(const string& filename, const int label,
