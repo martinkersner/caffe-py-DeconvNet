@@ -37,8 +37,10 @@ class AccuracyLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_ACCURACY;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_ACCURACY;
+    return V1LayerParameter_LayerType_ACCURACY; // Martin Kersner, 2015/12/16
   }
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
@@ -98,8 +100,10 @@ class BinaryAccuracyLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_BIN_ACCURACY;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_BIN_ACCURACY;
+    return V1LayerParameter_LayerType_BIN_ACCURACY;
   }
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
@@ -140,8 +144,10 @@ class EltwiseAccuracyLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_ELTWISE_ACCURACY;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_ELTWISE_ACCURACY;
+    return V1LayerParameter_LayerType_ELTWISE_ACCURACY; // Martin Kersner, 2015/12/16
   }
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
@@ -241,8 +247,10 @@ class ContrastiveLossLayer : public LossLayer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   virtual inline int ExactNumBottomBlobs() const { return 3; }
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_CONTRASTIVE_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_CONTRASTIVE_LOSS;
+    return V1LayerParameter_LayerType_CONTRASTIVE_LOSS; // Martin Kersner, 2015/12/16
   }
   /**
    * Unlike most loss layers, in the ContrastiveLossLayer we can backpropagate
@@ -329,8 +337,10 @@ class EuclideanLossLayer : public LossLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_EUCLIDEAN_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_EUCLIDEAN_LOSS;
+    return V1LayerParameter_LayerType_EUCLIDEAN_LOSS; // Martin Kersner, 2015/12/16
   }
 
   /**
@@ -438,8 +448,10 @@ class HingeLossLayer : public LossLayer<Dtype> {
   explicit HingeLossLayer(const LayerParameter& param)
       : LossLayer<Dtype>(param) {}
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_HINGE_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_HINGE_LOSS;
+    return V1LayerParameter_LayerType_HINGE_LOSS; // Martin Kersner, 2015/12/16
   }
 
  protected:
@@ -527,8 +539,10 @@ class InfogainLossLayer : public LossLayer<Dtype> {
   virtual inline int MinBottomBlobs() const { return 2; }
   virtual inline int MaxBottomBlobs() const { return 3; }
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_INFOGAIN_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_INFOGAIN_LOSS;
+    return V1LayerParameter_LayerType_INFOGAIN_LOSS; // Martin Kersner, 2015/12/16
   }
 
  protected:
@@ -611,8 +625,10 @@ class MultinomialLogisticLossLayer : public LossLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_MULTINOMIAL_LOGISTIC_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_MULTINOMIAL_LOGISTIC_LOSS;
+    return V1LayerParameter_LayerType_MULTINOMIAL_LOGISTIC_LOSS; // Martin Kersner, 2015/12/16
   }
 
  protected:
@@ -693,8 +709,10 @@ class SigmoidCrossEntropyLossLayer : public LossLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SIGMOID_CROSS_ENTROPY_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_SIGMOID_CROSS_ENTROPY_LOSS;
+    return V1LayerParameter_LayerType_SIGMOID_CROSS_ENTROPY_LOSS; // Martin Kersner, 2015/12/16
   }
 
  protected:
@@ -791,8 +809,10 @@ class SoftmaxWithLossLayer : public LossLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SOFTMAX_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_SOFTMAX_LOSS;
+    return V1LayerParameter_LayerType_SOFTMAX_LOSS; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return -1; }
   virtual inline int MinBottomBlobs() const { return 2; }
@@ -869,8 +889,10 @@ class RedAccuracyLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_RED_ACCURACY;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_RED_ACCURACY;
+    return V1LayerParameter_LayerType_RED_ACCURACY; // Martin Kersner, 2015/12/16
   }
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
@@ -918,8 +940,10 @@ class RedSoftmaxWithLossLayer : public LossLayer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_RED_SOFTMAX_LOSS;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_RED_SOFTMAX_LOSS;
+    return V1LayerParameter_LayerType_RED_SOFTMAX_LOSS; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return -1; }
   virtual inline int MinBottomBlobs() const { return 2; }

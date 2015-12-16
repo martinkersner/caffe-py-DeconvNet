@@ -43,8 +43,10 @@ class ArgMaxLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_ARGMAX;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_ARGMAX;
+    return V1LayerParameter_LayerType_ARGMAX; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -100,8 +102,10 @@ class BNLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_BN;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_BN;
+    return V1LayerParameter_LayerType_BN; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 1; }
@@ -155,8 +159,10 @@ class ConcatLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_CONCAT;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_CONCAT;
+    return V1LayerParameter_LayerType_CONCAT; // Martin Kersner, 2015/12/16
   }
   virtual inline int MinBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -238,8 +244,10 @@ class EltwiseLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_ELTWISE;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_ELTWISE;
+    return V1LayerParameter_LayerType_ELTWISE; // Martin Kersner, 2015/12/16
   }
   virtual inline int MinBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -282,8 +290,10 @@ class FlattenLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_FLATTEN;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_FLATTEN;
+    return V1LayerParameter_LayerType_FLATTEN; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -335,8 +345,10 @@ class InnerProductLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_INNER_PRODUCT;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_INNER_PRODUCT;
+    return V1LayerParameter_LayerType_INNER_PRODUCT; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -371,8 +383,10 @@ class MVNLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_MVN;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_MVN;
+    return V1LayerParameter_LayerType_MVN; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -408,8 +422,10 @@ class SilenceLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {}
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SILENCE;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_SILENCE;
+    return V1LayerParameter_LayerType_SILENCE; // Martin Kersner, 2015/12/16
   }
   virtual inline int MinBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 0; }
@@ -440,8 +456,10 @@ class SoftmaxLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SOFTMAX;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_SOFTMAX;
+    return V1LayerParameter_LayerType_SOFTMAX; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -507,8 +525,10 @@ class SplitLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SPLIT;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_SPLIT;
+    return V1LayerParameter_LayerType_SPLIT; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 1; }
@@ -545,8 +565,10 @@ class SliceLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline LayerParameter_LayerType type() const {
-    return LayerParameter_LayerType_SLICE;
+  //virtual inline LayerParameter_LayerType type() const {
+  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_SLICE;
+    return V1LayerParameter_LayerType_SLICE; // Martin Kersner, 2015/12/16
   }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 2; }

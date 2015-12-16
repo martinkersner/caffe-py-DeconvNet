@@ -9,6 +9,7 @@
 #include "caffe/common.hpp"
 #include "caffe/layer_factory.hpp"
 #include "caffe/proto/caffe.pb.h"
+#include "caffe/util/coords.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/util/math_functions.hpp"
 
 /**
