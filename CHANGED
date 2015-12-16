@@ -4,12 +4,22 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 * future.sh
 
 * include/caffe/common_layers.hpp                             class BNLayer
+>> copied
+
 * include/caffe/data_layers.hpp                               class ImageDimPrefetchingDataLayer, ImageSegDataLayer, WindowSegDataLayer, WindowSegBinaryLayer, SelectSegBinaryLayer, WindowClsDataLayer, WindowInstSegDataLayer                                      
+>> copied
+
 * include/caffe/data_transformer.hpp                          void TransformImgAndSeg
+
 * include/caffe/loss_layers.hpp                               class BinaryAccuracyLayer, EltwiseAccuracyLayer, RedAccuracyLayer, RedSoftmaxWithLossLayer
+>> copied
+
 * include/caffe/neuron_layers.hpp                             class DropoutChannelLayer, void Reshape, 3 short lines
+>> copied
+
 * include/caffe/util/io.hpp                                   cv::Mat ReadImageToCVMatNearest, cv::Mat ReadImageToCVMat
 * include/caffe/vision_layers.hpp                             class UnpoolingLayer
+>> copied
 
 * python/caffe/pycaffe.py                                     4 deleted lines
 
@@ -38,7 +48,9 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 * src/caffe/layers/select_seg_binary_layer.cpp                316
 
 * src/caffe/layers/unpooling_layer.cpp                        336
+>> copied
 * src/caffe/layers/unpooling_layer.cu                         293
+>> copied
 
 * src/caffe/layers/window_cls_data_layer.cpp                  309
 * src/caffe/layers/window_inst_seg_data_layer.cpp             323
@@ -55,3 +67,7 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 
 * src/caffe/util/math_functions.cpp                           template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
 >> added line template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
+
+== ADDITIONAL =================
+* include/caffe/dataset.hpp
+>> copied
