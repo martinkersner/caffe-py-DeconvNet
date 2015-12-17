@@ -136,6 +136,21 @@ class LayerRegisterer {
   }                                                                            \
   REGISTER_LAYER_CREATOR(type, Creator_##type##Layer)
 
+// Martin Kersner, 2015/12/17
+#define REGISTER_LAYER_CREATOR_LEGACY(type, creator)                                  \
+  static LayerRegisterer<float> g_creator_f_##type(                            \
+      V1LayerParameter_LayerType_##type, creator<float>);                        \
+  static LayerRegisterer<double> g_creator_d_##type(                           \
+      V1LayerParameter_LayerType_##type, creator<double>)
+
+#define REGISTER_LAYER_CLASS_LEGACY(type, clsname)                             \
+  template <typename Dtype>                                                    \
+  Layer<Dtype>* Creator_##clsname(const LayerParameter& param) {               \
+    return new clsname<Dtype>(param);                                          \
+  }                                                                            \
+  REGISTER_LAYER_CREATOR_LEGACY(type, Creator_##clsname)
+//
+
 }  // namespace caffe
 
 #endif  // CAFFE_LAYER_FACTORY_H_

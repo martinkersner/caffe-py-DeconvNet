@@ -39,7 +39,9 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 * src/caffe/layers/bn_layer.cu                                324
 
 * src/caffe/layers/dropout_channel_layer.cpp                  100
+>> copied
 * src/caffe/layers/dropout_channel_layer.cu                   84
+>> copied
 
 * src/caffe/layers/eltwise_accuracy_layer.cpp                 86
 * src/caffe/layers/image_seg_data_layer.cpp                   242
