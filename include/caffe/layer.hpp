@@ -216,6 +216,22 @@ class Layer {
    */
   virtual inline const char* type() const { return ""; }
 
+  // Martin Kersner, 2015/12/17
+  /**
+   * @brief Returns the layer type as an enum value.
+   */
+  virtual inline V1LayerParameter_LayerType V1type() const {
+    return V1LayerParameter_LayerType_NONE;
+  }
+
+  /**
+   * @brief Returns the layer type name.
+   */
+  //virtual inline const string& type_name() const {
+  //  return V1LayerParameter_LayerType_Name(type());
+  //}
+  // Martin Kersner, 2015/12/17
+
   /**
    * @brief Returns the exact number of bottom blobs required by the layer,
    *        or -1 if no exact number is required.

@@ -476,7 +476,7 @@ class CropLayer : public Layer<Dtype> {
   //virtual inline LayerParameter_LayerType type() const {
   virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
     //return LayerParameter_LayerType_CROP;
-    return V1LayerParameter_LayerType_CROP; // Martin Kersner, 2015/12/16
+    return V1LayerParameter_LayerType_CROP; // Martin Kersner, 2015/12/17
   }
   virtual inline int ExactNumBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -516,7 +516,7 @@ class UnpoolingLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
     //return LayerParameter_LayerType_UNPOOLING;
     return V1LayerParameter_LayerType_UNPOOLING; // Martin Kersner, 2015/12/16
   }
