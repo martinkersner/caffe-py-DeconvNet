@@ -4,7 +4,7 @@
 
 #include "caffe/layer.hpp"
 #include "caffe/util/math_functions.hpp"
-#include "caffe/vision_layers.hpp" // Martin Kersner, 2015/12/16
+#include "caffe/layers/vision_layers.hpp" // Martin Kersner, 2015/12/17
 
 namespace caffe {
 
