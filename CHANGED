@@ -34,6 +34,7 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 * src/caffe/layers/base_data_layer.cu                         void ImageDimPrefetchingDataLayer<Dtype>::Forward_gpu
 
 * src/caffe/layers/binary_accuracy.cpp                        86
+>> copied
 
 * src/caffe/layers/bn_layer.cpp                               420
 * src/caffe/layers/bn_layer.cu                                324
