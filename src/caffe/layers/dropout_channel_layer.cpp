@@ -100,14 +100,6 @@ STUB_GPU(DropoutChannelLayer);
 
 INSTANTIATE_CLASS(DropoutChannelLayer);
 //REGISTER_LAYER_CLASS(DROPOUT_CHANNEL, DropoutChannelLayer);
-//REGISTER_LAYER_CREATOR_LEGACY(DROPOUT_CHANNEL, DropoutChannelLayer); // Martin Kersner, 2015/12/17
-
-template <typename Dtype>                                                   
-Layer<Dtype>* Creator_DropoutChannelLayer(const LayerParameter& param) {              
-  return new DropoutChannelLayer<Dtype>(param);                                         
-}                                                                           
-
-static LayerRegistererLegacy<float> 
-g_creator_f_DROPOUT_CHANNEL(V1LayerParameter_LayerType_DROPOUT_CHANNEL, Creator_DropoutChannelLayer<float>);                        
+REGISTER_LAYER_CLASS_LEGACY(DROPOUT_CHANNEL, DropoutChannelLayer); // Martin Kersner, 2015/12/18
 
 }  // namespace caffe

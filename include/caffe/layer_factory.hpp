@@ -186,9 +186,9 @@ class LayerRegistererLegacy {
 
 // Martin Kersner, 2015/12/17
 #define REGISTER_LAYER_CREATOR_LEGACY(type, creator)                                  \
-  static LayerRegisterer<float> g_creator_f_##type(                            \
+  static LayerRegistererLegacy<float> g_creator_f_##type(                            \
       V1LayerParameter_LayerType_##type, creator<float>);                        \
-  static LayerRegisterer<double> g_creator_d_##type(                           \
+  static LayerRegistererLegacy<double> g_creator_d_##type(                           \
       V1LayerParameter_LayerType_##type, creator<double>)
 
 #define REGISTER_LAYER_CLASS_LEGACY(type, clsname)                             \
