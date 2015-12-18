@@ -306,7 +306,7 @@ message ParamSpec {
 // NOTE
 // Update the next available ID when you add a new LayerParameter field.
 //
-// LayerParameter next available layer-specific ID: 147 (last added: batch_norm_param)
+// LayerParameter next available layer-specific ID: 149 (last added: batch_norm_param)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -397,6 +397,8 @@ message LayerParameter {
   optional EltwiseAccuracyParameter eltwise_accuracy_param = 144; // Martin Kersner, 2015/12/18
   optional RedAccuracyParameter red_accuracy_param = 145; // Martin Kersner, 2015/12/18
   optional RedSoftmaxWithLossParameter red_softmax_loss_param = 146; // Martin Kersner, 2015/12/18
+  optional SelectSegBinaryParameter select_seg_binary_param = 147; // Martin Kersner, 2015/12/18
+  optional WindowClsDataParameter window_cls_data_param = 148; // Martin Kersner, 2015/12/18
 }
 
 // Message that stores parameters used to apply transformation

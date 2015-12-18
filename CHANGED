@@ -63,7 +63,9 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 
 * src/caffe/layers/relu_layer.cpp                             void ReLULayer<Dtype>::Reshape, plus minor changes
 * src/caffe/layers/relu_layer.cu                              __global__ void ReLUForward_With_Mask, plus some deletions and additions
+
 * src/caffe/layers/select_seg_binary_layer.cpp                316
+>> copied
 
 * src/caffe/layers/unpooling_layer.cpp                        336
 >> copied
