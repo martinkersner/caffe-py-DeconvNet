@@ -306,7 +306,7 @@ message ParamSpec {
 // NOTE
 // Update the next available ID when you add a new LayerParameter field.
 //
-// LayerParameter next available layer-specific ID: 144 (last added: batch_norm_param)
+// LayerParameter next available layer-specific ID: 145 (last added: batch_norm_param)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -394,6 +394,7 @@ message LayerParameter {
   optional UnpoolingParameter unpooling_param = 141; // Martin Kersner, 2015/12/16
   optional BinaryAccuracyParameter binary_accuracy_param = 142; // Martin Kersner, 2015/12/18
   optional BNParameter bn_param = 143; // Martin Kersner, 2015/12/18
+  optional EltwiseAccuracyParameter eltwise_accuracy_param = 144; // Martin Kersner, 2015/12/18
 }
 
 // Message that stores parameters used to apply transformation

@@ -47,6 +47,8 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> copied
 
 * src/caffe/layers/eltwise_accuracy_layer.cpp                 86
+>> copied
+
 * src/caffe/layers/image_seg_data_layer.cpp                   242
 * src/caffe/layers/red_accuracy_layer.cpp                     112
 * src/caffe/layers/red_softmax_loss_layer.cpp                 147
