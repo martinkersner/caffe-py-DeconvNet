@@ -227,9 +227,9 @@ class Layer {
   /**
    * @brief Returns the layer type name.
    */
-  //virtual inline const string& type_name() const {
-  //  return V1LayerParameter_LayerType_Name(type());
-  //}
+  virtual inline const string& type_name() const {
+    return V1LayerParameter_LayerType_Name(V1type());
+  }
   // Martin Kersner, 2015/12/17
 
   /**
