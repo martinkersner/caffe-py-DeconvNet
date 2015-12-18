@@ -20,6 +20,9 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> added V1 to many functions
 
 * include/caffe/util/io.hpp                                   cv::Mat ReadImageToCVMatNearest, cv::Mat ReadImageToCVMat
+>> added ReadImageToCVMatNearest
+>> added ReadImageToCVMatLegacy with the same funcionality as ReadImageToCVMat from original deconvnet
+
 * include/caffe/vision_layers.hpp                             class UnpoolingLayer
 >> copied to include/caffe/layers/
 
@@ -50,6 +53,8 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> copied
 
 * src/caffe/layers/image_seg_data_layer.cpp                   242
+>> copied
+
 * src/caffe/layers/red_accuracy_layer.cpp                     112
 * src/caffe/layers/red_softmax_loss_layer.cpp                 147
 * src/caffe/layers/relu_layer.cpp                             void ReLULayer<Dtype>::Reshape, plus minor changes
@@ -74,6 +79,7 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> cv::Mat ReadImageToCVMat contain two additional parameters *img_width and *img_height
 >> cv::Mat ReadImageToDatum has additional encoding parameter, HAVE NOT CHANGED YET
 >> DecodeDatumToCVMat different interfaces, HAVE NOT changed yet
+>> added ReadImageToCVMatLegacy with the same funcionality as ReadImageToCVMat from original deconvnet
 
 * src/caffe/util/math_functions.cpp                           template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
 >> added line template void caffe_set<unsigned int>(const int N, const unsigned int alpha, unsigned int* Y);
