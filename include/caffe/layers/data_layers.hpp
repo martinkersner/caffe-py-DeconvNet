@@ -541,7 +541,7 @@ class WindowClsDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
     //return LayerParameter_LayerType_IMAGE_DATA;
     return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
   }
