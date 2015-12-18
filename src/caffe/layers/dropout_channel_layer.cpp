@@ -107,7 +107,7 @@ Layer<Dtype>* Creator_DropoutChannelLayer(const LayerParameter& param) {
   return new DropoutChannelLayer<Dtype>(param);                                         
 }                                                                           
 
-//static LayerRegisterer<float> 
-//g_creator_f_DROPOUT_CHANNEL(V1LayerParameter_LayerType_DROPOUT_CHANNEL, Creator_DropoutChannelLayer<float>);                        
+static LayerRegistererLegacy<float> 
+g_creator_f_DROPOUT_CHANNEL(V1LayerParameter_LayerType_DROPOUT_CHANNEL, Creator_DropoutChannelLayer<float>);                        
 
 }  // namespace caffe

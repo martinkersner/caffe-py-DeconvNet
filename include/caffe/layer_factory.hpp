@@ -112,6 +112,43 @@ class LayerRegistry {
   }
 };
 
+// Martin Kersner, 2015/12/17
+template <typename Dtype>
+class LayerRegistryLegacy {
+ public:
+  typedef Layer<Dtype>* (*Creator)(const LayerParameter&);
+  typedef std::map<V1LayerParameter_LayerType, Creator> CreatorRegistry;
+
+  static CreatorRegistry& Registry() {
+    static CreatorRegistry* g_registry_ = new CreatorRegistry();
+    return *g_registry_;
+  }
+
+  // Adds a creator.
+  static void AddCreator(const V1LayerParameter_LayerType& type,
+                         Creator creator) {
+    CreatorRegistry& registry = Registry();
+    CHECK_EQ(registry.count(type), 0)
+        << "Layer type " << type << " already registered.";
+    registry[type] = creator;
+  }
+
+  // Get a layer using a LayerParameter.
+  static Layer<Dtype>* CreateLayer(const V1LayerParameter& param) { // Martin Kersner, 2015/12/18
+    LOG(INFO) << "Creating layer " << param.name();
+    const V1LayerParameter_LayerType& type = param.type();
+    CreatorRegistry& registry = Registry();
+    CHECK_EQ(registry.count(type), 1);
+    return registry[type](param);
+  }
+
+ private:
+  // Layer registry should never be instantiated - everything is done with its
+  // static variables.
+  LayerRegistryLegacy() {}
+};
+//
+
 
 template <typename Dtype>
 class LayerRegisterer {
@@ -123,6 +160,17 @@ class LayerRegisterer {
   }
 };
 
+// Martin Kersner, 2015/12/17
+template <typename Dtype>
+class LayerRegistererLegacy {
+ public:
+  LayerRegistererLegacy(const V1LayerParameter_LayerType& type,
+                  Layer<Dtype>* (*creator)(const LayerParameter&)) {
+    // LOG(INFO) << "Registering layer type: " << type;
+    LayerRegistryLegacy<Dtype>::AddCreator(type, creator);
+  }
+};
+//
 
 #define REGISTER_LAYER_CREATOR(type, creator)                                  \
   static LayerRegisterer<float> g_creator_f_##type(#type, creator<float>);     \
