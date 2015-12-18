@@ -5,6 +5,16 @@
 
 namespace caffe {
 
+// Martin Kersner, 2015/12/18
+template <typename Dtype>
+void ReLULayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top) {
+  NeuronLayer<Dtype>::Reshape(bottom, top);
+  if (top.size() > 1) {
+    top[1]->ReshapeLike(*top[0]);
+  }
+}
+
 template <typename Dtype>
 void ReLULayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
     const vector<Blob<Dtype>*>& top) {

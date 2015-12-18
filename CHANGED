@@ -62,7 +62,11 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> copied
 
 * src/caffe/layers/relu_layer.cpp                             void ReLULayer<Dtype>::Reshape, plus minor changes
+>> added Reshape
+>> minor changes in Forward_cpu havent been propagated yet
+
 * src/caffe/layers/relu_layer.cu                              __global__ void ReLUForward_With_Mask, plus some deletions and additions
+>> RELUForward_With_Mask is employed in Forward_gpu, currently doesnt seem to be necessary
 
 * src/caffe/layers/select_seg_binary_layer.cpp                316
 >> copied
@@ -73,9 +77,16 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> copied
 
 * src/caffe/layers/window_cls_data_layer.cpp                  309
+>> copied
+
 * src/caffe/layers/window_inst_seg_data_layer.cpp             323
+>> copied
+
 * src/caffe/layers/window_seg_binary_layer.cpp                297
+>> copied
+
 * src/caffe/layers/window_seg_data_layer.cpp                  288 
+>> copied
 
 * src/caffe/proto/caffe.proto                                 message BinaryAccuracyParameter, message SelectSegBinaryParameter, message BNParameter, message EltwiseAccuracyParameter, message RedAccuracyParameter, message RedSoftmaxWithLossParameter, message UnpoolingParameter, message WindowClsDataParameter, plus many small optinal lines
 >> added everything necessary, hopefully
