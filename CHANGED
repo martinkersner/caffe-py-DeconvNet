@@ -34,7 +34,9 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 * src/caffe/layer_factory.cpp                                 Layer<Dtype>* GetUnpoolingLayer
 
 * src/caffe/layers/base_data_layer.cpp                        void ImageDimPrefetchingDataLayer<DType>::LayerSetup, void ImageDimPrefetchingDataLayer<DType>::ForwardCPU, 2 one line macros
+>> copied functions 
 * src/caffe/layers/base_data_layer.cu                         void ImageDimPrefetchingDataLayer<Dtype>::Forward_gpu
+>> copied function
 
 * src/caffe/layers/binary_accuracy.cpp                        86
 >> copied

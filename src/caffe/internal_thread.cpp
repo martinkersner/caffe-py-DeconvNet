@@ -63,4 +63,17 @@ void InternalThread::StopInternalThread() {
   }
 }
 
+// Martin Kersner, 2015/12/18
+/** Will not return until the internal thread has exited. */
+bool InternalThread::WaitForInternalThreadToExit() {
+  if (is_started()) {
+    try {
+      thread_->join();
+    } catch (...) {
+      return false;
+    }
+  }
+  return true;
+}
+
 }  // namespace caffe

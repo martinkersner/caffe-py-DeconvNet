@@ -28,6 +28,10 @@ class InternalThread {
    */
   void StartInternalThread();
 
+  // Martin Kersner, 2015/12/18
+  /** Will not return until the internal thread has exited. */
+  bool WaitForInternalThreadToExit();
+
   /** Will not return until the internal thread has exited. */
   void StopInternalThread();
 
