@@ -11,6 +11,7 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 >> added V1 to many functions
 
 * include/caffe/data_transformer.hpp                          void TransformImgAndSeg
+>> added function
 
 * include/caffe/loss_layers.hpp                               class BinaryAccuracyLayer, EltwiseAccuracyLayer, RedAccuracyLayer, RedSoftmaxWithLossLayer
 >> copied to include/caffe/layers/
@@ -28,8 +29,8 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 
 * python/caffe/pycaffe.py                                     4 deleted lines
 
-* src/caffe/data_transformer.cpp
-
+* src/caffe/data_transformer.cpp                              #include <opencv2/imgproc/imgproc.hpp>, void DataTransformer<Dtype>::TransformImgAndSeg
+>> added method
 
 * src/caffe/layer_factory.cpp                                 Layer<Dtype>* GetUnpoolingLayer
 
@@ -109,3 +110,49 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 
 * include/caffe/util/coords.hpp 
 >> copied to include/caffe/util/
+
+== ADDITIONAL 2 ===============
+* include/caffe/data_layers.hpp                               class ImageSegCtrlPrefetchingDataLayer, ImageSegCtrlClsPrefetchingDataLayer, ImageDimPrefetchingDataLayer, SegBinaryCtrlLayer, SegCtrlClsLayer
+* src/caffe/layers/base_data_layer.cpp                        ImageDimPrefetchingDataLayer::LayerSetup, ::Forward_cpu, ImageSegCtrlPrefetchingDataLaye::LayerSetUp, ::Forward_cpu, ImageSegCtrlClsPrefetchingDataLayer::LayerSetUp, ::Forward_cpu
+
+============================
+== data_layers.hpp ========
+▶ BaseDataLayer  
+▶ BasePrefetchingDataLayer  
+▶ DataLayer  
+▶ DummyDataLayer  
+▶ HDF5DataLayer  
+▶ HDF5OutputLayer  
+▶ ImageDataLayer  
+▶ ImageDimPrefetchingDataLayer  
+▶ ImageSegDataLayer  
+▶ MemoryDataLayer  
+▶ SelectSegBinaryLayer  
+▶ WindowClsDataLayer  
+▶ WindowDataLayer  
+▶ WindowInstSegDataLayer  
+▶ WindowSegBinaryLayer  
+▶ WindowSegDataLayer  
+
+== base_data_layer.cpp =====
+▶ BaseDataLayer  
+▶ BasePrefetchingDataLayer  
+▶ ImageDimPrefetchingDataLayer  
+
+** Includes caffe/layers/data_layers.hpp
+* src/caffe/layers/window_inst_seg_data_layer.cpp
+>> renamed
+* src/caffe/layers/window_cls_data_layer.cpp
+>> renamed
+* src/caffe/layers/window_seg_binary_layer.cpp
+>> renamed
+* src/caffe/layers/image_seg_data_layer.cpp
+>> renamed
+* src/caffe/layers/select_seg_binary_layer.cpp
+>> renamed
+* src/caffe/layers/window_seg_data_layer.cpp
+>> renamed
+
+* include/caffe/layers/common_layers.hpp
+* include/caffe/layers/vision_layers.hpp
+* include/caffe/layers/base_data_layer.hpp

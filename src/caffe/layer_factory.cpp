@@ -15,6 +15,7 @@
 #include "caffe/layers/softmax_layer.hpp"
 #include "caffe/layers/tanh_layer.hpp"
 #include "caffe/proto/caffe.pb.h"
+#include "caffe/layers/legacy_unpooling_layer.hpp" // Martin Kersner, 2015/12/21
 
 #ifdef USE_CUDNN
 #include "caffe/layers/cudnn_conv_layer.hpp"
@@ -121,6 +122,24 @@ shared_ptr<Layer<Dtype> > GetLRNLayer(const LayerParameter& param) {
 }
 
 REGISTER_LAYER_CREATOR(LRN, GetLRNLayer);
+
+// Martin Kersner, 2015/12/18
+// Get unpooling layer according to engine.
+template <typename Dtype>
+Layer<Dtype>* GetUnpoolingLayer(const LayerParameter& param) {
+  UnpoolingParameter_Engine engine = param.unpooling_param().engine();
+  if (engine == UnpoolingParameter_Engine_DEFAULT) {
+    engine = UnpoolingParameter_Engine_CAFFE;
+  }
+  if (engine == UnpoolingParameter_Engine_CAFFE) {
+    return new UnpoolingLayer<Dtype>(param);
+  } else {
+    LOG(FATAL) << "Layer " << param.name() << " has unknown engine.";
+  }
+}
+
+REGISTER_LAYER_CREATOR_LEGACY(UNPOOLING, GetUnpoolingLayer); // Martin Kersner, 2015/12/21
+// Martin Kersner, 2015/12/18
 
 // Get relu layer according to engine.
 template <typename Dtype>
