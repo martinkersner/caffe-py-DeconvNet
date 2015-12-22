@@ -10,7 +10,8 @@
 #include <opencv2/highgui/highgui_c.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/18
+//#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/18
+#include "caffe/layers/base_data_layer.hpp" // Martin Kersner, 2015/12/18
 #include "caffe/layer.hpp"
 #include "caffe/util/benchmark.hpp"
 #include "caffe/util/io.hpp"
@@ -20,12 +21,12 @@
 namespace caffe {
 
 template <typename Dtype>
-WindowInstSegDataLayer<Dtype>::~WindowInstSegDataLayer<Dtype>() {
+WindowClsDataLayer<Dtype>::~WindowClsDataLayer<Dtype>() {
   this->JoinPrefetchThread();
 }
 
 template <typename Dtype>
-void WindowInstSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
+void WindowClsDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
   const int new_height = this->layer_param_.image_data_param().new_height();
   const int new_width  = this->layer_param_.image_data_param().new_width();
@@ -35,10 +36,12 @@ void WindowInstSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& b
 
   TransformationParameter transform_param = this->layer_param_.transform_param();
   CHECK(transform_param.has_mean_file() == false) << 
-         "WindowInstSegDataLayer does not support mean file";
+         "WindowClsDataLayer does not support mean file";
   CHECK((new_height == 0 && new_width == 0) ||
       (new_height > 0 && new_width > 0)) << "Current implementation requires "
       "new_height and new_width to be set at the same time.";
+
+  label_dim_ = this->layer_param_.window_cls_data_param().label_dim();
 
   // Read the file with filenames and labels
   const string& source = this->layer_param_.image_data_param().source();
@@ -51,24 +54,20 @@ void WindowInstSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& b
     string imgfn;
     iss >> imgfn;
     string segfn = "";
-    string instfn = "";
     if (label_type != ImageDataParameter_LabelType_NONE) {
       iss >> segfn;
-      iss >> instfn;
     }
-    INSTITEMS item;
+    SEGITEMS item;
     item.imgfn = imgfn;
     item.segfn = segfn;
-    item.instfn = instfn;
-    
-    int x1, y1, x2, y2, inst_label;
-    iss >> x1 >> y1 >> x2 >> y2 >> inst_label;
+
+    int x1, y1, x2, y2;
+    iss >> x1 >> y1 >> x2 >> y2;
     item.x1 = x1;
     item.y1 = y1;
     item.x2 = x2;
     item.y2 = y2;
-    item.inst_label = inst_label;
-    
+
     lines_.push_back(item);
   }
 
@@ -105,21 +104,23 @@ void WindowInstSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& b
     this->prefetch_data_.Reshape(batch_size, channels, crop_size, crop_size);
     this->transformed_data_.Reshape(1, channels, crop_size, crop_size);
 
-    //label
-    top[1]->Reshape(batch_size, 1, crop_size, crop_size);
-    this->prefetch_label_.Reshape(batch_size, 1, crop_size, crop_size);
-    this->transformed_label_.Reshape(1, 1, crop_size, crop_size);
-     
+    // transformed label
+    this->seg_label_buffer_.Reshape(batch_size, 1, crop_size, crop_size);
+    this->transformed_label_.Reshape(1, 1, crop_size, crop_size);  
+   
   } else {
     top[0]->Reshape(batch_size, channels, height, width);
     this->prefetch_data_.Reshape(batch_size, channels, height, width);
     this->transformed_data_.Reshape(1, channels, height, width);
-
-    //label
-    top[1]->Reshape(batch_size, 1, height, width);
-    this->prefetch_label_.Reshape(batch_size, 1, height, width);
+    
+    // transformed label
+    this->seg_label_buffer_.Reshape(batch_size, 1, height, width);
     this->transformed_label_.Reshape(1, 1, height, width);     
   }
+  // label
+  top[1]->Reshape(batch_size, label_dim_, 1, 1);
+  this->prefetch_label_.Reshape(batch_size, label_dim_, 1, 1);
+  this->computed_label_.Reshape(1, label_dim_, 1, 1);
 
   // image dimensions, for each image, stores (img_height, img_width)
   top[2]->Reshape(batch_size, 1, 1, 2);
@@ -139,7 +140,7 @@ void WindowInstSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& b
 }
 
 template <typename Dtype>
-void WindowInstSegDataLayer<Dtype>::ShuffleImages() {
+void WindowClsDataLayer<Dtype>::ShuffleImages() {
   caffe::rng_t* prefetch_rng =
       static_cast<caffe::rng_t*>(prefetch_rng_->generator());
   shuffle(lines_.begin(), lines_.end(), prefetch_rng);
@@ -147,7 +148,7 @@ void WindowInstSegDataLayer<Dtype>::ShuffleImages() {
 
 // This function is used to create a thread that prefetches the data.
 template <typename Dtype>
-void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
+void WindowClsDataLayer<Dtype>::InternalThreadEntry() {
   CPUTimer batch_timer;
   batch_timer.Start();
   double read_time = 0;
@@ -159,6 +160,7 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
   Dtype* top_data     = this->prefetch_data_.mutable_cpu_data();
   Dtype* top_label    = this->prefetch_label_.mutable_cpu_data(); 
   Dtype* top_data_dim = this->prefetch_data_dim_.mutable_cpu_data();
+  Dtype* seg_label    = this->seg_label_buffer_.mutable_cpu_data();
 
   const int max_height = this->prefetch_data_.height();
   const int max_width  = this->prefetch_data_.width();
@@ -169,7 +171,6 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
   const int new_width  = image_data_param.new_width();
   const int label_type = this->layer_param_.image_data_param().label_type();
   const int ignore_label = image_data_param.ignore_label();
-  const int other_object_label = image_data_param.other_object_label();
   const bool is_color  = image_data_param.is_color();
   string root_folder   = image_data_param.root_folder();
 
@@ -180,7 +181,7 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
     top_data_dim_offset = this->prefetch_data_dim_.offset(item_id);
 
     std::vector<cv::Mat> cv_img_seg;
-    cv::Mat cv_img, cv_seg, cv_inst;
+    cv::Mat cv_img, cv_seg;
 
     // get a blob
     timer.Start();
@@ -197,40 +198,27 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
     }
     if (label_type == ImageDataParameter_LabelType_PIXEL) {
       cv_seg = ReadImageToCVMatNearest(root_folder + lines_[lines_id_].segfn,
-					    0, 0, false);
+    				    0, 0, false);
       if (!cv_seg.data) {
-	DLOG(INFO) << "Fail to load seg: " << root_folder + lines_[lines_id_].segfn;
-      }
-      cv_inst = ReadImageToCVMatNearest(root_folder + lines_[lines_id_].instfn,
-					    0, 0, false);
-      if (!cv_inst.data) {
-	DLOG(INFO) << "Fail to load inst: " << root_folder + lines_[lines_id_].instfn;
+    DLOG(INFO) << "Fail to load seg: " << root_folder + lines_[lines_id_].segfn;
       }
     }
     else if (label_type == ImageDataParameter_LabelType_IMAGE) {
       const int label = atoi(lines_[lines_id_].segfn.c_str());
       cv::Mat seg(cv_img.rows, cv_img.cols, 
-		  CV_8UC1, cv::Scalar(label));
-      cv_seg = seg;     
-      cv::Mat inst(cv_img.rows, cv_img.cols, 
-		  CV_8UC1, cv::Scalar(0));
-      cv_inst = inst; 
+    	  CV_8UC1, cv::Scalar(label));
+      cv_seg = seg;      
     }
     else {
       cv::Mat seg(cv_img.rows, cv_img.cols, 
-		  CV_8UC1, cv::Scalar(ignore_label));
+    	  CV_8UC1, cv::Scalar(ignore_label));
       cv_seg = seg;
-      cv::Mat inst(cv_img.rows, cv_img.cols, 
-		  CV_8UC1, cv::Scalar(0));
-      cv_inst = inst;
-
     }
     // crop window out of image and warp it
     int x1 = lines_[lines_id_].x1;
     int y1 = lines_[lines_id_].y1;
     int x2 = lines_[lines_id_].x2;
     int y2 = lines_[lines_id_].y2;
-    int inst_label = lines_[lines_id_].inst_label;
     // compute padding 
     int pad_x1 = std::max(0, -x1);
     int pad_y1 = std::max(0, -y1);
@@ -243,9 +231,6 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
         cv::copyMakeBorder(cv_seg, cv_seg, pad_y1, pad_y2,
             pad_x1, pad_x2, cv::BORDER_CONSTANT,
             cv::Scalar(ignore_label));
-        cv::copyMakeBorder(cv_inst, cv_inst, pad_y1, pad_y2,
-            pad_x1, pad_x2, cv::BORDER_CONSTANT,
-            cv::Scalar(0));
     }
     // clip bounds
     x1 = x1 + pad_x1;
@@ -261,26 +246,12 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
     cv::Rect roi(x1, y1, x2-x1+1, y2-y1+1);
     cv::Mat cv_cropped_img = cv_img(roi);
     cv::Mat cv_cropped_seg = cv_seg(roi);
-    cv::Mat cv_cropped_inst= cv_inst(roi);
     if (new_width > 0 && new_height > 0) {
         cv::resize(cv_cropped_img, cv_cropped_img, 
                cv::Size(new_width, new_height), 0, 0, cv::INTER_LINEAR);
         cv::resize(cv_cropped_seg, cv_cropped_seg, 
                cv::Size(new_width, new_height), 0, 0, cv::INTER_NEAREST);
-        cv::resize(cv_cropped_inst,cv_cropped_inst, 
-               cv::Size(new_width, new_height), 0, 0, cv::INTER_NEAREST);
     }
-    // masking based on inst map
-    for(int j=0; j < new_height; j++) {
-        for(int i=0; i < new_width; i++) {
-            int inst_val = static_cast<int>(cv_cropped_inst.at<uchar>(j,i));
-            if (inst_val != inst_label && inst_val != ignore_label && inst_val != 0) {
-                cv_cropped_seg.at<uchar>(j,i) = other_object_label;
-            } 
-        }
-    }
-    
-
     cv_img_seg.push_back(cv_cropped_img);
     cv_img_seg.push_back(cv_cropped_seg);
 
@@ -292,13 +263,30 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
     offset = this->prefetch_data_.offset(item_id);
     this->transformed_data_.set_cpu_data(top_data + offset);
 
-    offset = this->prefetch_label_.offset(item_id);
-    this->transformed_label_.set_cpu_data(top_label + offset);
+    offset = this->seg_label_buffer_.offset(item_id);
+    this->transformed_label_.set_cpu_data(seg_label + offset);
 
-    this->data_transformer_.TransformImgAndSeg(cv_img_seg, 
-	 &(this->transformed_data_), &(this->transformed_label_),
-	 ignore_label);
+    //this->data_transformer_.TransformImgAndSeg(cv_img_seg, 
+    this->data_transformer_->TransformImgAndSeg(cv_img_seg, // Martin Kersner, 2015/12/22
+     &(this->transformed_data_), &(this->transformed_label_),
+     ignore_label);
     trans_time += timer.MicroSeconds();
+
+    // compute label
+    offset = this->prefetch_label_.offset(item_id);
+    this->computed_label_.set_cpu_data(top_label + offset);
+
+    const Dtype * one_seg_data = this->transformed_label_.cpu_data();
+    Dtype * one_label_data = this->computed_label_.mutable_cpu_data();
+    int pixel_cnt = this->transformed_label_.count();
+    caffe_set(label_dim_, Dtype(0), one_label_data);
+    for (int i = 0; i < pixel_cnt; i++) {
+      int pixel_label = one_seg_data[i];
+      if (pixel_label != 0 && pixel_label != 255) {
+        CHECK_LT(pixel_label-1, label_dim_);
+        one_label_data[pixel_label-1] = 1;
+      }
+    }
 
     // go to the next std::vector<int>::iterator iter;
     lines_id_++;
@@ -307,7 +295,7 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
       DLOG(INFO) << "Restarting data prefetching from start.";
       lines_id_ = 0;
       if (this->layer_param_.image_data_param().shuffle()) {
-	ShuffleImages();
+    ShuffleImages();
       }
     }
   }
@@ -317,7 +305,7 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
   DLOG(INFO) << "Transform time: " << trans_time / 1000 << " ms.";
 }
 
-INSTANTIATE_CLASS(WindowInstSegDataLayer);
-//REGISTER_LAYER_CLASS(WINDOW_INST_SEG_DATA, WindowInstSegDataLayer);
-REGISTER_LAYER_CLASS_LEGACY(WINDOW_INST_SEG_DATA, WindowInstSegDataLayer); // Martin Kersner, 2015/12/18
+INSTANTIATE_CLASS(WindowClsDataLayer);
+//REGISTER_LAYER_CLASS(WINDOW_CLS_DATA, WindowClsDataLayer);
+REGISTER_LAYER_CLASS_LEGACY(WINDOW_CLS_DATA, WindowClsDataLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

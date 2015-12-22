@@ -8,7 +8,6 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/layers/common_layers.hpp" // Martin Kersner, 2015/12/16
-#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/layer.hpp"
 #include "caffe/layers/loss_layers.hpp" // Martin Kersner, 2015/12/16
 #include "caffe/layers/neuron_layers.hpp" // Martin Kersner, 2015/12/16

@@ -141,17 +141,13 @@ git diff --name-only f2dab32c6568947963dc85c5b5863b08268e1649 d9e8494a2832d67b25
 
 ** Includes caffe/layers/data_layers.hpp
 * src/caffe/layers/window_inst_seg_data_layer.cpp
->> renamed
+>> problem SOLVED?!
 * src/caffe/layers/window_cls_data_layer.cpp
->> renamed
+>> problem SOLVED?!
 * src/caffe/layers/window_seg_binary_layer.cpp
->> renamed
 * src/caffe/layers/image_seg_data_layer.cpp
->> renamed
 * src/caffe/layers/select_seg_binary_layer.cpp
->> renamed
 * src/caffe/layers/window_seg_data_layer.cpp
->> renamed
 
 * include/caffe/layers/common_layers.hpp
 * include/caffe/layers/vision_layers.hpp

@@ -9,7 +9,6 @@
 #include "caffe/layer.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/blocking_queue.hpp"
-#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/18
 
 namespace caffe {
 
@@ -123,6 +122,88 @@ class ImageDimPrefetchingDataLayer : public BasePrefetchingDataLayer<Dtype> {
   Blob<Dtype> prefetch_data_dim_;
   bool output_data_dim_;
 };
+
+// Martin Kersner, 2015/12/22
+template <typename Dtype>
+class WindowClsDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
+ public:
+  explicit WindowClsDataLayer(const LayerParameter& param)
+    : ImageDimPrefetchingDataLayer<Dtype>(param) {}
+  virtual ~WindowClsDataLayer();
+  virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top);
+
+  //virtual inline LayerParameter_LayerType type() const {}
+  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
+  }
+  virtual inline int ExactNumBottomBlobs() const { return 0; }
+  virtual inline int ExactNumTopBlobs() const { return 3; }
+  virtual inline bool AutoTopBlobs() const { return true; }
+
+ protected:
+  virtual void ShuffleImages();
+  virtual void InternalThreadEntry();
+  virtual void load_batch(Batch<Dtype>* batch) {} // Martin Kersner, 2015/12/22
+
+ protected:
+  Blob<Dtype> seg_label_buffer_;
+  Blob<Dtype> transformed_label_;
+  Blob<Dtype> computed_label_;
+
+  shared_ptr<Caffe::RNG> prefetch_rng_;
+
+  typedef struct SegItems {
+    std::string imgfn;
+    std::string segfn;
+    int x1, y1, x2, y2;
+  } SEGITEMS;
+
+  vector<SEGITEMS> lines_;
+  int lines_id_;
+  int label_dim_;
+};
+
+template <typename Dtype>
+class WindowInstSegDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
+ public:
+  explicit WindowInstSegDataLayer(const LayerParameter& param)
+    : ImageDimPrefetchingDataLayer<Dtype>(param) {}
+  virtual ~WindowInstSegDataLayer();
+  virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top);
+
+  //virtual inline LayerParameter_LayerType type() const {}
+  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+    //return LayerParameter_LayerType_IMAGE_DATA;
+    return V1LayerParameter_LayerType_IMAGE_DATA; // Martin Kersner, 2015/12/16
+  }
+  virtual inline int ExactNumBottomBlobs() const { return 0; }
+  virtual inline int ExactNumTopBlobs() const { return 3; }
+  virtual inline bool AutoTopBlobs() const { return true; }
+
+ protected:
+  virtual void ShuffleImages();
+  virtual void InternalThreadEntry();
+  virtual void load_batch(Batch<Dtype>* batch) {} // Martin Kersner, 2015/12/22
+
+ protected:
+  Blob<Dtype> transformed_label_;
+
+  shared_ptr<Caffe::RNG> prefetch_rng_;
+
+  typedef struct InstItems {
+    std::string imgfn;
+    std::string segfn;
+    std::string instfn;
+    int x1, y1, x2, y2, inst_label;
+  } INSTITEMS;
+
+  vector<INSTITEMS> lines_;
+  int lines_id_;
+};
+// Martin Kersner, 2015/12/22
 
 }  // namespace caffe
 
