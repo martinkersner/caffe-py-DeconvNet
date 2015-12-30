@@ -321,5 +321,6 @@ void WindowInstSegDataLayer<Dtype>::InternalThreadEntry() {
 
 INSTANTIATE_CLASS(WindowInstSegDataLayer);
 //REGISTER_LAYER_CLASS(WINDOW_INST_SEG_DATA, WindowInstSegDataLayer);
-REGISTER_LAYER_CLASS_LEGACY(WINDOW_INST_SEG_DATA, WindowInstSegDataLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(WindowInstSegData);
+//REGISTER_LAYER_CLASS_LEGACY(WINDOW_INST_SEG_DATA, WindowInstSegDataLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

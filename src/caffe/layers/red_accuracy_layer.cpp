@@ -109,5 +109,6 @@ void RedAccuracyLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
 
 INSTANTIATE_CLASS(RedAccuracyLayer);
 //REGISTER_LAYER_CLASS(RED_ACCURACY, RedAccuracyLayer);
-REGISTER_LAYER_CLASS_LEGACY(RED_ACCURACY, RedAccuracyLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(RedAccuracy);
+//REGISTER_LAYER_CLASS_LEGACY(RED_ACCURACY, RedAccuracyLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

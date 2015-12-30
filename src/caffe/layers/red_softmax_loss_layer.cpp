@@ -143,6 +143,7 @@ void RedSoftmaxWithLossLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& to
 
 INSTANTIATE_CLASS(RedSoftmaxWithLossLayer);
 //REGISTER_LAYER_CLASS(RED_SOFTMAX_LOSS, RedSoftmaxWithLossLayer);
-REGISTER_LAYER_CLASS_LEGACY(RED_SOFTMAX_LOSS, RedSoftmaxWithLossLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(RedSoftmaxWithLoss);
+//REGISTER_LAYER_CLASS_LEGACY(RED_SOFTMAX_LOSS, RedSoftmaxWithLossLayer); // Martin Kersner, 2015/12/18
 
 }  // namespace caffe

@@ -101,10 +101,11 @@ class BinaryAccuracyLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/18
-    //return LayerParameter_LayerType_BIN_ACCURACY;
-    return V1LayerParameter_LayerType_BIN_ACCURACY;
-  }
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/18
+  //  //return LayerParameter_LayerType_BIN_ACCURACY;
+  //  return V1LayerParameter_LayerType_BIN_ACCURACY;
+  //}
+  virtual inline const char* type() const { return "BinaryAccuracy"; } // Martin Kersner, 2015/12/29
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -145,10 +146,11 @@ class EltwiseAccuracyLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_ELTWISE_ACCURACY;
-    return V1LayerParameter_LayerType_ELTWISE_ACCURACY; // Martin Kersner, 2015/12/16
-  }
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+  //  //return LayerParameter_LayerType_ELTWISE_ACCURACY;
+  //  return V1LayerParameter_LayerType_ELTWISE_ACCURACY; // Martin Kersner, 2015/12/16
+  //}
+  virtual inline const char* type() const { return "EltwiseAccuracy"; } // Martin Kersner, 2015/12/29
 
   virtual inline int ExactNumBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
@@ -890,11 +892,11 @@ class RedAccuracyLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_RED_ACCURACY;
-    return V1LayerParameter_LayerType_RED_ACCURACY; // Martin Kersner, 2015/12/16
-  }
-
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+  //  //return LayerParameter_LayerType_RED_ACCURACY;
+  //  return V1LayerParameter_LayerType_RED_ACCURACY; // Martin Kersner, 2015/12/16
+  //}
+  virtual inline const char* type() const { return "RedAccuracy"; } // Martin Kersner, 2015/12/29
   virtual inline int ExactNumBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
 
@@ -941,10 +943,11 @@ class RedSoftmaxWithLossLayer : public LossLayer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_RED_SOFTMAX_LOSS;
-    return V1LayerParameter_LayerType_RED_SOFTMAX_LOSS; // Martin Kersner, 2015/12/16
-  }
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+  //  //return LayerParameter_LayerType_RED_SOFTMAX_LOSS;
+  //  return V1LayerParameter_LayerType_RED_SOFTMAX_LOSS; // Martin Kersner, 2015/12/16
+  //}
+  virtual inline const char* type() const { return "RedSoftmaxWithLoss"; } // Martin Kersner, 2015/12/29
   virtual inline int ExactNumBottomBlobs() const { return -1; }
   virtual inline int MinBottomBlobs() const { return 2; }
   virtual inline int MaxBottomBlobs() const { return 3; }

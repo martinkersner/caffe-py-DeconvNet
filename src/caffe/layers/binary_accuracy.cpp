@@ -83,5 +83,6 @@ void BinaryAccuracyLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
 
 INSTANTIATE_CLASS(BinaryAccuracyLayer);
 //REGISTER_LAYER_CLASS(BIN_ACCURACY, BinaryAccuracyLayer);
-REGISTER_LAYER_CLASS_LEGACY(BIN_ACCURACY, BinaryAccuracyLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(BinaryAccuracy); // Martin Kersner, 2015/12/30
+//REGISTER_LAYER_CLASS_LEGACY(BIN_ACCURACY, BinaryAccuracyLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

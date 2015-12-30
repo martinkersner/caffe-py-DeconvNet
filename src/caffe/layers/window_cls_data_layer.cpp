@@ -307,5 +307,6 @@ void WindowClsDataLayer<Dtype>::InternalThreadEntry() {
 
 INSTANTIATE_CLASS(WindowClsDataLayer);
 //REGISTER_LAYER_CLASS(WINDOW_CLS_DATA, WindowClsDataLayer);
-REGISTER_LAYER_CLASS_LEGACY(WINDOW_CLS_DATA, WindowClsDataLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(WindowClsData); // Martin Kersner, 2015/12/30
+//REGISTER_LAYER_CLASS_LEGACY(WINDOW_CLS_DATA, WindowClsDataLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

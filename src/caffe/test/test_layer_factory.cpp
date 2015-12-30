@@ -26,6 +26,7 @@ TYPED_TEST(LayerFactoryTest, TestCreateLayer) {
   shared_ptr<Layer<Dtype> > layer;
   for (typename LayerRegistry<Dtype>::CreatorRegistry::iterator iter =
        registry.begin(); iter != registry.end(); ++iter) {
+    
     // Special case: PythonLayer is checked by pytest
     if (iter->first == "Python") { continue; }
     LayerParameter layer_param;

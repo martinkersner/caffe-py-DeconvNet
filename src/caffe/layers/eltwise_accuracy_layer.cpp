@@ -83,5 +83,6 @@ void EltwiseAccuracyLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom
 
 INSTANTIATE_CLASS(EltwiseAccuracyLayer);
 //REGISTER_LAYER_CLASS(ELTWISE_ACCURACY, EltwiseAccuracyLayer);
-REGISTER_LAYER_CLASS_LEGACY(ELTWISE_ACCURACY, EltwiseAccuracyLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(EltwiseAccuracy); // Martin Kersner, 2015/12/29
+//REGISTER_LAYER_CLASS_LEGACY(ELTWISE_ACCURACY, EltwiseAccuracyLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

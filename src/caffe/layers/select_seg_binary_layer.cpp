@@ -10,7 +10,8 @@
 #include <opencv2/highgui/highgui_c.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "caffe/layers/data_layers.hpp"
+//#include "caffe/layers/data_layers.hpp"
+#include "caffe/layers/base_data_layer.hpp" // Martin Kersner, 2015/12/30
 #include "caffe/layer.hpp"
 #include "caffe/util/benchmark.hpp"
 #include "caffe/util/io.hpp"
@@ -264,7 +265,8 @@ void SelectSegBinaryLayer<Dtype>::InternalThreadEntry() {
     offset = this->prefetch_label_.offset(item_id);
     this->transformed_label_.set_cpu_data(top_label + offset);
 
-    this->data_transformer_.TransformImgAndSeg(cv_img_seg, 
+    //this->data_transformer_.TransformImgAndSeg(cv_img_seg, 
+    this->data_transformer_->TransformImgAndSeg(cv_img_seg,  // martin Kersner, 2015/12/30
 	 &(this->transformed_data_), &(this->transformed_label_),
 	 ignore_label);
     trans_time += timer.MicroSeconds();
@@ -312,5 +314,6 @@ void SelectSegBinaryLayer<Dtype>::InternalThreadEntry() {
 
 INSTANTIATE_CLASS(SelectSegBinaryLayer);
 //REGISTER_LAYER_CLASS(SELECT_SEG_BINARY, SelectSegBinaryLayer);
-REGISTER_LAYER_CLASS_LEGACY(SELECT_SEG_BINARY, SelectSegBinaryLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(SelectSegBinary); // Martin Kersner, 2015/12/30
+//REGISTER_LAYER_CLASS_LEGACY(SELECT_SEG_BINARY, SelectSegBinaryLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

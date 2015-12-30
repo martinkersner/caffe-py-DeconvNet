@@ -99,6 +99,7 @@ STUB_GPU(DropoutChannelLayer);
 
 INSTANTIATE_CLASS(DropoutChannelLayer);
 //REGISTER_LAYER_CLASS(DROPOUT_CHANNEL, DropoutChannelLayer);
-REGISTER_LAYER_CLASS_LEGACY(DROPOUT_CHANNEL, DropoutChannelLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(DropoutChannel); // Martin Kersner, 2015/12/30
+//REGISTER_LAYER_CLASS_LEGACY(DROPOUT_CHANNEL, DropoutChannelLayer); // Martin Kersner, 2015/12/18
 
 }  // namespace caffe

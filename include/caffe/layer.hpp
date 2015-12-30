@@ -20,6 +20,8 @@ namespace boost { class mutex; }
 
 namespace caffe {
 
+template <typename Dtype> class Net; // Martin Kersner, 2015/12/29
+
 /**
  * @brief An interface for the units of computation which can be composed into a
  *        Net.
@@ -333,6 +335,18 @@ class Layer {
     param_propagate_down_[param_id] = value;
   }
 
+  // Martin Kersner, 2015/12/29
+  virtual DiagonalAffineMap<Dtype> coord_map() {
+    NOT_IMPLEMENTED;
+    // suppress warnings
+    return DiagonalAffineMap<Dtype>(vector<pair<Dtype, Dtype> >());
+  }
+  /** 
+    * @brief Used by Net to give layers a pointer to their owning net.
+  */
+  void set_net(Net<Dtype>* net) { net_ = net; }
+  // Martin Kersner, 2015/12/29
+
 
  protected:
   /** The protobuf that stores the layer parameters */
@@ -347,6 +361,8 @@ class Layer {
   /** The vector that indicates whether each top blob has a non-zero weight in
    *  the objective function. */
   vector<Dtype> loss_;
+
+  Net<Dtype>* net_; // Martin Kersner, 2015/12/29
 
   /** @brief Using the CPU device, compute the layer output. */
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,

@@ -1187,7 +1187,7 @@ message V1LayerParameter {
     ACCURACY = 1;
     ARGMAX = 30;
     BIN_ACCURACY = 49; // Martin Kersner, 2015/12/16
-    BN = 43; // Martin Kersner, 2015/12/16
+    BN = 43; // Martin Kersner, 2015/12/29
     BNLL = 2;
     CONCAT = 3;
     CONTRASTIVE_LOSS = 37;

@@ -102,10 +102,11 @@ class BNLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_BN;
-    return V1LayerParameter_LayerType_BN; // Martin Kersner, 2015/12/16
-  }
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+  //  //return LayerParameter_LayerType_BN;
+  //  return V1LayerParameter_LayerType_BN; // Martin Kersner, 2015/12/16
+  //}
+  virtual inline const char* type() const { return "BN"; } // Martin Kersner, 2015/12/29
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 1; }
   // if the BNMode is "LEARN" mamximum 3 top blobs are available

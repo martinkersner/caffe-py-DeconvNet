@@ -417,5 +417,6 @@ STUB_GPU(BNLayer);
 
   INSTANTIATE_CLASS(BNLayer);
 //  REGISTER_LAYER_CLASS(BN, BNLayer);
-REGISTER_LAYER_CLASS_LEGACY(BN, BNLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(BN); // Martin Kersner, 2015/12/29
+//REGISTER_LAYER_CLASS_LEGACY(BN, BNLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

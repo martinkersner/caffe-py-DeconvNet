@@ -17,6 +17,14 @@ BaseDataLayer<Dtype>::BaseDataLayer(const LayerParameter& param)
       transform_param_(param.transform_param()) {
 }
 
+// DELETE, Martin Kersner, 2015/12/30
+//template <typename Dtype>
+//BaseDataLayerTMP<Dtype>::BaseDataLayerTMP(const LayerParameter& param)
+//    : Layer<Dtype>(param),
+//      transform_param_(param.transform_param()) {
+//}
+//
+
 template <typename Dtype>
 void BaseDataLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {

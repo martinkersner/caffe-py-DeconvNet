@@ -16,7 +16,8 @@
 #include <opencv2/highgui/highgui_c.h>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/18
+//#include "caffe/layers/data_layers.hpp" // Martin Kersner, 2015/12/18
+#include "caffe/layers/base_data_layer.hpp" // Martin Kersner, 2015/12/30
 #include "caffe/layer.hpp"
 #include "caffe/util/benchmark.hpp"
 #include "caffe/util/io.hpp"
@@ -27,12 +28,14 @@ namespace caffe {
 
 template <typename Dtype>
 ImageSegDataLayer<Dtype>::~ImageSegDataLayer<Dtype>() {
-  this->JoinPrefetchThread();
+// Martin Kersner, 2015/12/30
+//    this->JoinPrefetchThread(); 
 }
 
 template <typename Dtype>
 void ImageSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
+/*
   const int new_height = this->layer_param_.image_data_param().new_height();
   const int new_width  = this->layer_param_.image_data_param().new_width();
   const bool is_color  = this->layer_param_.image_data_param().is_color();
@@ -127,18 +130,22 @@ void ImageSegDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom
   LOG(INFO) << "output data_dim size: " << top[2]->num() << ","
 	    << top[2]->channels() << "," << top[2]->height() << ","
 	    << top[2]->width();
+*/
 }
 
 template <typename Dtype>
 void ImageSegDataLayer<Dtype>::ShuffleImages() {
+/*
   caffe::rng_t* prefetch_rng =
       static_cast<caffe::rng_t*>(prefetch_rng_->generator());
   shuffle(lines_.begin(), lines_.end(), prefetch_rng);
+*/
 }
 
 // This function is used to create a thread that prefetches the data.
 template <typename Dtype>
 void ImageSegDataLayer<Dtype>::InternalThreadEntry() {
+/*
   CPUTimer batch_timer;
   batch_timer.Start();
   double read_time = 0;
@@ -235,9 +242,11 @@ void ImageSegDataLayer<Dtype>::InternalThreadEntry() {
   DLOG(INFO) << "Prefetch batch: " << batch_timer.MilliSeconds() << " ms.";
   DLOG(INFO) << "     Read time: " << read_time / 1000 << " ms.";
   DLOG(INFO) << "Transform time: " << trans_time / 1000 << " ms.";
+*/
 }
 
 INSTANTIATE_CLASS(ImageSegDataLayer);
 //REGISTER_LAYER_CLASS(IMAGE_SEG_DATA, ImageSegDataLayer);
-REGISTER_LAYER_CLASS_LEGACY(IMAGE_SEG_DATA, ImageSegDataLayer); // Martin Kersner, 2015/12/18
+REGISTER_LAYER_CLASS(ImageSegData);
+//REGISTER_LAYER_CLASS_LEGACY(IMAGE_SEG_DATA, ImageSegDataLayer); // Martin Kersner, 2015/12/18
 }  // namespace caffe

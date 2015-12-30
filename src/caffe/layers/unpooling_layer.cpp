@@ -331,6 +331,6 @@ STUB_GPU(UnpoolingLayer);
 #endif
 
 INSTANTIATE_CLASS(UnpoolingLayer);
-
+REGISTER_LAYER_CLASS(Unpooling); // Martin Kersner, 2015/12/29
 
 }  // namespace caffe

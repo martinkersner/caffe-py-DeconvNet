@@ -931,6 +931,38 @@ const char* UpgradeV1LayerType(const V1LayerParameter_LayerType type) {
     return "WindowData";
   case V1LayerParameter_LayerType_THRESHOLD:
     return "Threshold";
+
+  // Martin Kersner, 2015/12/29
+  case V1LayerParameter_LayerType_CROP: 
+    return "Crop";
+  case V1LayerParameter_LayerType_ELTWISE_ACCURACY: 
+    return "EltwiseAccuracy";
+  case V1LayerParameter_LayerType_UNPOOLING: 
+    return "Unpooling";
+  case V1LayerParameter_LayerType_BN: 
+    return "BN";
+  case V1LayerParameter_LayerType_RED_SOFTMAX_LOSS: 
+    return "RedSoftmaxWithLoss";
+  case V1LayerParameter_LayerType_RED_ACCURACY: 
+    return "RedAccuracy";
+  case V1LayerParameter_LayerType_IMAGE_SEG_DATA: 
+    return "ImageSegData";
+  case V1LayerParameter_LayerType_WINDOW_SEG_DATA: 
+    return "WindowSegData";
+  case V1LayerParameter_LayerType_WINDOW_INST_SEG_DATA: 
+    return "WindowInstSegData";
+  case V1LayerParameter_LayerType_BIN_ACCURACY: 
+    return "BinaryAccuracy";
+  case V1LayerParameter_LayerType_WINDOW_CLS_DATA: 
+    return "WindowClsData";
+  case V1LayerParameter_LayerType_WINDOW_SEG_BINARY: 
+    return "WindowSegBinary";
+  case V1LayerParameter_LayerType_SELECT_SEG_BINARY: 
+    return "SelectSegBinary";
+  case V1LayerParameter_LayerType_DROPOUT_CHANNEL: 
+    return "DropoutChannel";
+  //
+
   default:
     LOG(FATAL) << "Unknown V1LayerParameter layer type: " << type;
     return "";

@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "boost/scoped_ptr.hpp"
 #include "google/protobuf/text_format.h"

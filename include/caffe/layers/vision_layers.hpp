@@ -474,11 +474,12 @@ class CropLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_CROP;
-    return V1LayerParameter_LayerType_CROP; // Martin Kersner, 2015/12/17
-  }
+  ////virtual inline LayerParameter_LayerType type() const {
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+  //  //return LayerParameter_LayerType_CROP;
+  //  return V1LayerParameter_LayerType_CROP; // Martin Kersner, 2015/12/17
+  //}
+  virtual inline const char* type() const { return "Crop"; } // Martin Kersner, 2015/12/29
   virtual inline int ExactNumBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
@@ -502,11 +503,11 @@ class CropLayer : public Layer<Dtype> {
 };
 
 // Martin Kersner, 2015/12/21
-///**
-// * @brief Unools the input image .
-// *
-// * TODO(dox): thorough documentation for Forward, Backward, and proto params.
-// */
+/**
+ * @brief Unools the input image .
+ *
+ * TODO(dox): thorough documentation for Forward, Backward, and proto params.
+ */
 //template <typename Dtype>
 //class UnpoolingLayer : public Layer<Dtype> {
 // public:
@@ -518,10 +519,11 @@ class CropLayer : public Layer<Dtype> {
 //      const vector<Blob<Dtype>*>& top);
 //
 //  //virtual inline LayerParameter_LayerType type() const {
-//  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
-//    //return LayerParameter_LayerType_UNPOOLING;
-//    return V1LayerParameter_LayerType_UNPOOLING; // Martin Kersner, 2015/12/16
-//  }
+//  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+//  //  //return LayerParameter_LayerType_UNPOOLING;
+//  //  return V1LayerParameter_LayerType_UNPOOLING; // Martin Kersner, 2015/12/16
+//  //}
+//  virtual inline const char* type() const { return "Unpooling"; } // Martin Kersner, 2015/12/29
 //  virtual inline int ExactNumTopBlobs() const { return 1; }
 //  virtual inline int MinBottomBlobs() const { return 1; }
 //  // MAX POOL layers can output an extra top blob for the mask;

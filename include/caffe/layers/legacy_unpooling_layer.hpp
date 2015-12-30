@@ -28,10 +28,11 @@ class UnpoolingLayer : public Layer<Dtype> {
       const vector<Blob<Dtype>*>& top);
 
   //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_UNPOOLING;
-    return V1LayerParameter_LayerType_UNPOOLING; // Martin Kersner, 2015/12/16
-  }
+  //virtual inline V1LayerParameter_LayerType V1type() const { // Martin Kersner, 2015/12/16
+  //  //return LayerParameter_LayerType_UNPOOLING;
+  //  return V1LayerParameter_LayerType_UNPOOLING; // Martin Kersner, 2015/12/16
+  //}
+  virtual inline const char* type() const { return "Unpooling"; } // Martin Kersner, 2015/12/29
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline int MinBottomBlobs() const { return 1; }
   // MAX POOL layers can output an extra top blob for the mask;
