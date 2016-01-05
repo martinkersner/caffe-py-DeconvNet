@@ -28,6 +28,12 @@ class EltwiseLayer : public Layer<Dtype> {
   virtual inline const char* type() const { return "Eltwise"; }
   virtual inline int MinBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
+  // Martin Kersner, 2016/01/04
+  virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "ELTWISE coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
+    return DiagonalAffineMap<Dtype>::identity(2);
+  }
+  // Martin Kersner, 2016/01/04
 
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,

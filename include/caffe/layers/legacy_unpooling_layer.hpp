@@ -42,6 +42,7 @@ class UnpoolingLayer : public Layer<Dtype> {
             UnpoolingParameter_UnpoolMethod_MAX) ? 2 : 1;
   }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "LEGACY UNPOOLING coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     return FilterMap<Dtype>(kernel_h_, kernel_w_, stride_h_, stride_w_,
         pad_h_, pad_w_);
   }

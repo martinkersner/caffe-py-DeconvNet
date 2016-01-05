@@ -337,6 +337,7 @@ class Layer {
 
   // Martin Kersner, 2015/12/29
   virtual DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "LAYER coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     NOT_IMPLEMENTED;
     // suppress warnings
     return DiagonalAffineMap<Dtype>(vector<pair<Dtype, Dtype> >());

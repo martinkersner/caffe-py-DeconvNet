@@ -37,6 +37,7 @@ class NeuronLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "NEURONLAYER coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     return DiagonalAffineMap<Dtype>::identity(2);
   }
 };

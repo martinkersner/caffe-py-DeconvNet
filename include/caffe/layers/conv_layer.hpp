@@ -62,6 +62,40 @@ class ConvolutionLayer : public BaseConvolutionLayer<Dtype> {
       : BaseConvolutionLayer<Dtype>(param) {}
 
   virtual inline const char* type() const { return "Convolution"; }
+  // Martin Kersner, 2016/01/04
+  virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    //this->compute_output_shape();
+    int kernel_h_ = this->kernel_shape_.cpu_data()[0];
+    int kernel_w_ = kernel_h_;
+    int stride_h_ = this->stride_.cpu_data()[0];
+    int stride_w_ = stride_h_;
+    int pad_w_ = this->pad_.cpu_data()[0];
+    int pad_h_ = pad_w_;
+
+    std::cout << "KERNEL_W: " << kernel_h_ << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    std::cout << "STRIDE_W: " << stride_h_ << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    std::cout << "PAD_W: " << pad_h_ << std::endl << std::flush; // Martin Kersner, 2016/01/05
+
+    //ConvolutionParameter conv_param = this->layer_param_.convolution_param();
+    //std::cout << "K2: " << conv_param.kernel_h() << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << "S2: " << conv_param.stride_h() << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << "P2: " << conv_param.pad_h() << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << std::endl << std::flush;
+
+    //std::cout << "K3: " << conv_param.kernel_size_size() << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << "S3: " << conv_param.stride_size() << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << "P3: " << conv_param.pad_size() << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << std::endl << std::flush;
+
+    //std::cout << "K4: " << this->kernel_shape_.cpu_data()[0] << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << "S4: " << this->stride_.cpu_data()[0] << std::endl << std::flush; // Martin Kersner, 2016/01/05
+    //std::cout << "P4: " << this->pad_.cpu_data()[0] << std::endl << std::flush; // Martin Kersner, 2016/01/05
+
+    return FilterMap<Dtype>(kernel_h_, kernel_w_, stride_h_, stride_w_, pad_h_, pad_w_).inv();
+    //return FilterMap<Dtype>(this->kernel_h_, this->kernel_w_, this->stride_h_,
+    //    this->stride_w_, this->pad_h_, this->pad_w_).inv();
+  }
+  // Martin Kersner, 2016/01/04
 
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,

@@ -167,6 +167,7 @@ class ConcatLayer : public Layer<Dtype> {
   virtual inline int MinBottomBlobs() const { return 2; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "CONCAT coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     return DiagonalAffineMap<Dtype>::identity(2);
   }
 
@@ -228,49 +229,51 @@ class ConcatLayer : public Layer<Dtype> {
   int concat_dim_;
 };
 
-/**
- * @brief Compute elementwise operations, such as product and sum,
- *        along multiple input Blobs.
- *
- * TODO(dox): thorough documentation for Forward, Backward, and proto params.
- */
-template <typename Dtype>
-class EltwiseLayer : public Layer<Dtype> {
- public:
-  explicit EltwiseLayer(const LayerParameter& param)
-      : Layer<Dtype>(param) {}
-  virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-  virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-
-  //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_ELTWISE;
-    return V1LayerParameter_LayerType_ELTWISE; // Martin Kersner, 2015/12/16
-  }
-  virtual inline int MinBottomBlobs() const { return 2; }
-  virtual inline int ExactNumTopBlobs() const { return 1; }
-  virtual inline DiagonalAffineMap<Dtype> coord_map() {
-    return DiagonalAffineMap<Dtype>::identity(2);
-  }
-
- protected:
-  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-  virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
-      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
-  virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
-      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
-
-  EltwiseParameter_EltwiseOp op_;
-  vector<Dtype> coeffs_;
-  Blob<int> max_idx_;
-
-  bool stable_prod_grad_;
-};
+// Commented by Martin Kersner, 2016/01/04
+///**
+// * @brief Compute elementwise operations, such as product and sum,
+// *        along multiple input Blobs.
+// *
+// * TODO(dox): thorough documentation for Forward, Backward, and proto params.
+// */
+//template <typename Dtype>
+//class EltwiseLayer : public Layer<Dtype> {
+// public:
+//  explicit EltwiseLayer(const LayerParameter& param)
+//      : Layer<Dtype>(param) {}
+//  virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//  virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//
+//  //virtual inline LayerParameter_LayerType type() const {
+//  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+//    //return LayerParameter_LayerType_ELTWISE;
+//    return V1LayerParameter_LayerType_ELTWISE; // Martin Kersner, 2015/12/16
+//  }
+//  virtual inline int MinBottomBlobs() const { return 2; }
+//  virtual inline int ExactNumTopBlobs() const { return 1; }
+//  virtual inline DiagonalAffineMap<Dtype> coord_map() {
+//    std::cout << "ELTWISE coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
+//    return DiagonalAffineMap<Dtype>::identity(2);
+//  }
+//
+// protected:
+//  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//  virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
+//      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+//  virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
+//      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+//
+//  EltwiseParameter_EltwiseOp op_;
+//  vector<Dtype> coeffs_;
+//  Blob<int> max_idx_;
+//
+//  bool stable_prod_grad_;
+//};
 
 /**
  * @brief Reshapes the input Blob into flat vectors.
@@ -391,6 +394,7 @@ class MVNLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "MVN coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     return DiagonalAffineMap<Dtype>::identity(2);
   }
 
@@ -464,6 +468,7 @@ class SoftmaxLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "SOFTMAX coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     return DiagonalAffineMap<Dtype>::identity(2);
   }
 
@@ -511,43 +516,45 @@ class CuDNNSoftmaxLayer : public SoftmaxLayer<Dtype> {
 };
 #endif
 
-/**
- * @brief Creates a "split" path in the network by copying the bottom Blob
- *        into multiple top Blob%s to be used by multiple consuming layers.
- *
- * TODO(dox): thorough documentation for Forward, Backward, and proto params.
- */
-template <typename Dtype>
-class SplitLayer : public Layer<Dtype> {
- public:
-  explicit SplitLayer(const LayerParameter& param)
-      : Layer<Dtype>(param) {}
-  virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-
-  //virtual inline LayerParameter_LayerType type() const {
-  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
-    //return LayerParameter_LayerType_SPLIT;
-    return V1LayerParameter_LayerType_SPLIT; // Martin Kersner, 2015/12/16
-  }
-  virtual inline int ExactNumBottomBlobs() const { return 1; }
-  virtual inline int MinTopBlobs() const { return 1; }
-  virtual inline DiagonalAffineMap<Dtype> coord_map() {
-    return DiagonalAffineMap<Dtype>::identity(2);
-  }
-
- protected:
-  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-  virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
-      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
-  virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
-      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
-
-  int count_;
-};
+// Commented by Martin Kersner, 2016/01/04
+///**
+// * @brief Creates a "split" path in the network by copying the bottom Blob
+// *        into multiple top Blob%s to be used by multiple consuming layers.
+// *
+// * TODO(dox): thorough documentation for Forward, Backward, and proto params.
+// */
+//template <typename Dtype>
+//class SplitLayer : public Layer<Dtype> {
+// public:
+//  explicit SplitLayer(const LayerParameter& param)
+//      : Layer<Dtype>(param) {}
+//  virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//
+//  //virtual inline LayerParameter_LayerType type() const {
+//  virtual inline V1LayerParameter_LayerType type() const { // Martin Kersner, 2015/12/16
+//    //return LayerParameter_LayerType_SPLIT;
+//    return V1LayerParameter_LayerType_SPLIT; // Martin Kersner, 2015/12/16
+//  }
+//  virtual inline int ExactNumBottomBlobs() const { return 1; }
+//  virtual inline int MinTopBlobs() const { return 1; }
+//  virtual inline DiagonalAffineMap<Dtype> coord_map() {
+//    std::cout << "SPLIT coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
+//    return DiagonalAffineMap<Dtype>::identity(2);
+//  }
+//
+// protected:
+//  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+//      const vector<Blob<Dtype>*>& top);
+//  virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
+//      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+//  virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
+//      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+//
+//  int count_;
+//};
 
 /**
  * @brief Takes a Blob and slices it along either the num or channel dimension,
@@ -573,6 +580,7 @@ class SliceLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 2; }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    std::cout << "SLICE coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
     return DiagonalAffineMap<Dtype>::identity(2);
   }
 

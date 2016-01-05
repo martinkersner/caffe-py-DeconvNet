@@ -62,6 +62,12 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   // Compute height_out_ and width_out_ from other parameters.
   virtual void compute_output_shape() = 0;
 
+  // LEGACY, Martin Kersner, 2016/01/04
+  //int kernel_h_, kernel_w_;
+  //int stride_h_, stride_w_;
+  //int pad_h_, pad_w_;
+  // LEGACY, Martin Kersner, 2016/01/04
+
   /// @brief The spatial dimensions of a filter kernel.
   Blob<int> kernel_shape_;
   /// @brief The spatial dimensions of the stride.

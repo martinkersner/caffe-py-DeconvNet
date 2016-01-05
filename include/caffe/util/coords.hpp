@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <utility>
 #include <vector>
+#include <string> // Martin Kersner, 2015/12/31
 
 namespace caffe {
 
@@ -17,6 +18,7 @@ class DiagonalAffineMap {
   }
 
   inline DiagonalAffineMap compose(const DiagonalAffineMap& other) const {
+    std::cout << "COMPOSE" << std::endl << std::flush; // Martin Kersner, 2016/01/04
     CHECK_EQ(coefs_.size(), other.coefs_.size())
         << "Attempt to compose DiagonalAffineMaps of different dimensions";
     DiagonalAffineMap<Dtype> out;
@@ -36,6 +38,11 @@ class DiagonalAffineMap {
   DiagonalAffineMap() { }
   static inline pair<Dtype, Dtype> compose_coefs(pair<Dtype, Dtype> left,
       pair<Dtype, Dtype> right) {
+    std::cout << "COMPOSE: " << left.first << std::endl << std::flush; // Martin Kersner, 2016/01/04
+    std::cout << "COMPOSE: " << left.second << std::endl << std::flush; // Martin Kersner, 2016/01/04
+    std::cout << "COMPOSE: " << right.first << std::endl << std::flush; // Martin Kersner, 2016/01/04
+    std::cout << "COMPOSE: " << right.second << std::endl << std::flush; // Martin Kersner, 2016/01/04
+
     return make_pair(left.first * right.first,
                      left.first * right.second + left.second);
   }

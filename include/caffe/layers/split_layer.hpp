@@ -26,6 +26,11 @@ class SplitLayer : public Layer<Dtype> {
   virtual inline const char* type() const { return "Split"; }
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int MinTopBlobs() const { return 1; }
+  // Martin Kersner, 2016/01/04
+  virtual inline DiagonalAffineMap<Dtype> coord_map() {
+    return DiagonalAffineMap<Dtype>::identity(2);
+  }
+  // Martin Kersner, 2016/01/04
 
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
