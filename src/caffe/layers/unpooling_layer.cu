@@ -4,7 +4,8 @@
 
 #include "caffe/layer.hpp"
 #include "caffe/util/math_functions.hpp"
-#include "caffe/layers/vision_layers.hpp" // Martin Kersner, 2015/12/17
+//#include "caffe/layers/vision_layers.hpp" // Martin Kersner, 2015/12/17
+#include "caffe/layers/unpooling_layer.hpp" // Martin Kersner, 2016/01/07
 
 namespace caffe {
 
@@ -116,7 +117,8 @@ void UnpoolingLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
   const bool use_bottom_mask = bottom.size() > 1;
   const Dtype* bottom_mask = NULL;
   switch (this->layer_param_.unpooling_param().unpool()) {
-  case UnpoolingParameter_UnpoolMethod_MAX:
+  //case UnpoolingParameter_UnpoolMethod_MAX:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_MAX:
     if (use_bottom_mask) {
       bottom_mask = bottom[1]->gpu_data();
     } 
@@ -127,14 +129,16 @@ void UnpoolingLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
         kernel_w_, stride_h_, stride_w_, pad_h_, pad_w_, top_data,
         bottom_mask);
     break;
-  case UnpoolingParameter_UnpoolMethod_AVE:
+  //case UnpoolingParameter_UnpoolMethod_AVE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_AVE:
     // NOLINT_NEXT_LINE(whitespace/operators)
     AveUnpoolForward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
         top[0]->count(), bottom_data, bottom[0]->num(), channels_,
         unpooled_height_, unpooled_width_, height_, width_, kernel_h_,
         kernel_w_, stride_h_, stride_w_, pad_h_, pad_w_, top_data);
     break;
-  case UnpoolingParameter_UnpoolMethod_TILE:
+  //case UnpoolingParameter_UnpoolMethod_TILE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_TILE:
     // NOLINT_NEXT_LINE(whitespace/operators)
     TileUnpoolForward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
         top[0]->count(), bottom_data, bottom[0]->num(), channels_,
@@ -255,7 +259,8 @@ void UnpoolingLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
   const bool use_bottom_mask = bottom.size() > 1;
   const Dtype* bottom_mask = NULL;
   switch (this->layer_param_.unpooling_param().unpool()) {
-  case UnpoolingParameter_UnpoolMethod_MAX:
+  //case UnpoolingParameter_UnpoolMethod_MAX:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_MAX:
     if (use_bottom_mask) {
       bottom_mask = bottom[1]->gpu_data();
     } 
@@ -266,14 +271,16 @@ void UnpoolingLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
         kernel_h_, kernel_w_, stride_h_, stride_w_, pad_h_, pad_w_,
         bottom_diff);
     break;
-  case UnpoolingParameter_UnpoolMethod_AVE:
+  //case UnpoolingParameter_UnpoolMethod_AVE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_AVE:
     // NOLINT_NEXT_LINE(whitespace/operators)
     AveUnpoolBackward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
         bottom[0]->count(), top_diff, top[0]->num(), channels_,
         unpooled_height_, unpooled_width_, height_, width_, kernel_h_,
         kernel_w_, stride_h_, stride_w_, pad_h_, pad_w_, bottom_diff);
     break;
-  case UnpoolingParameter_UnpoolMethod_TILE:
+  //case UnpoolingParameter_UnpoolMethod_TILE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_TILE:
     // NOLINT_NEXT_LINE(whitespace/operators)
     TileUnpoolBackward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
         bottom[0]->count(), top_diff, top[0]->num(), channels_,

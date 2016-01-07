@@ -15,7 +15,7 @@
 #include "caffe/layers/softmax_layer.hpp"
 #include "caffe/layers/tanh_layer.hpp"
 #include "caffe/proto/caffe.pb.h"
-#include "caffe/layers/legacy_unpooling_layer.hpp" // Martin Kersner, 2015/12/21
+#include "caffe/layers/unpooling_layer.hpp" // Martin Kersner, 2016/01/07
 
 #ifdef USE_CUDNN
 #include "caffe/layers/cudnn_conv_layer.hpp"
@@ -125,20 +125,33 @@ REGISTER_LAYER_CREATOR(LRN, GetLRNLayer);
 
 // Martin Kersner, 2015/12/18
 // Get unpooling layer according to engine.
+//template <typename Dtype>
+//Layer<Dtype>* GetUnpoolingLayer(const LayerParameter& param) {
+//  UnpoolingParameter_Engine engine = param.unpooling_param().engine();
+//  if (engine == UnpoolingParameter_Engine_DEFAULT) {
+//    engine = UnpoolingParameter_Engine_CAFFE;
+//  }
+//  if (engine == UnpoolingParameter_Engine_CAFFE) {
+//    return new UnpoolingLayer<Dtype>(param);
+//  } else {
+//    LOG(FATAL) << "Layer " << param.name() << " has unknown engine.";
+//  }
+//}
 template <typename Dtype>
-Layer<Dtype>* GetUnpoolingLayer(const LayerParameter& param) {
+shared_ptr<Layer<Dtype> > GetUnpoolingLayer(const LayerParameter& param) {
   UnpoolingParameter_Engine engine = param.unpooling_param().engine();
   if (engine == UnpoolingParameter_Engine_DEFAULT) {
     engine = UnpoolingParameter_Engine_CAFFE;
   }
   if (engine == UnpoolingParameter_Engine_CAFFE) {
-    return new UnpoolingLayer<Dtype>(param);
+    return shared_ptr<Layer<Dtype> >(new UnpoolingLayer<Dtype>(param));
   } else {
     LOG(FATAL) << "Layer " << param.name() << " has unknown engine.";
   }
 }
 
-REGISTER_LAYER_CREATOR_LEGACY(UNPOOLING, GetUnpoolingLayer); // Martin Kersner, 2015/12/21
+//REGISTER_LAYER_CREATOR_LEGACY(UNPOOLING, GetUnpoolingLayer); // Martin Kersner, 2015/12/21
+REGISTER_LAYER_CREATOR(Unpooling, GetUnpoolingLayer); // Martin Kersner, 2016/01/07
 // Martin Kersner, 2015/12/18
 
 // Get relu layer according to engine.

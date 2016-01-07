@@ -14,7 +14,7 @@
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/layers/base_conv_layer.hpp" // Martin Kersner, 2016/01/04
 
-#include "caffe/layers/legacy_unpooling_layer.hpp" // Martin Kersner, 2015/12/21
+//#include "caffe/layers/unpooling_layer.hpp" // Martin Kersner, 2015/12/21
 #include "caffe/layers/eltwise_layer.hpp" // Martin Kersner, 2016/01/04
 
 namespace caffe {

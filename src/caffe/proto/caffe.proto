@@ -1093,11 +1093,11 @@ message ThresholdParameter {
 // Message that stores parameters used by PoolingLayer
 message UnpoolingParameter {
   enum UnpoolMethod {
-    MAX = 0;
-    AVE = 1;
-    TILE= 2;
+    UNPOOL_MAX = 0;
+    UNPOOL_AVE = 1;
+    UNPOOL_TILE= 2;
   }
-  optional UnpoolMethod unpool = 1 [default = MAX]; // The pooling method
+  optional UnpoolMethod unpool = 1 [default = UNPOOL_MAX]; // The pooling method
   // Pad, kernel size, and stride are all given as a single value for equal
   // dimensions in height and width or as Y, X pairs.
   optional uint32 pad = 4 [default = 0]; // The padding size (equal in Y, X)
@@ -1379,6 +1379,13 @@ message V0LayerParameter {
   // the other dimensions must be the same for all the bottom blobs.
   // By default it will concatenate blobs along the channels dimension.
   optional uint32 concat_dim = 65 [default = 1];
+  optional uint32 unpoolsize = 66; // Martin Kersner, 2016/01/07
+  enum UnpoolMethod {
+    UNPOOL_MAX = 0;
+    UNPOOL_AVE = 1;
+    UNPOOL_TILE = 2;
+  }
+  optional UnpoolMethod unpool = 67 [default = UNPOOL_MAX]; // Martin Kersner, 2016/01/07
 
   optional HDF5OutputParameter hdf5_output_param = 1001;
 }

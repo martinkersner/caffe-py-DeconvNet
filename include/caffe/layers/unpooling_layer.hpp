@@ -1,12 +1,12 @@
-#ifndef CAFFE_LEGACY_UNPOOLING_LAYER_HPP_
-#define CAFFE_LEGACY_UNPOOLING_LAYER_HPP_
+#ifndef CAFFE_UNPOOLING_LAYER_HPP_
+#define CAFFE_UNPOOLING_LAYER_HPP_
 
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "caffe/blob.hpp"
-#include "caffe/common.hpp"
+//#include "caffe/common.hpp" // Martin Kersner, 2016/01/07
 #include "caffe/layer.hpp"
 #include "caffe/proto/caffe.pb.h"
 
@@ -38,8 +38,9 @@ class UnpoolingLayer : public Layer<Dtype> {
   // MAX POOL layers can output an extra top blob for the mask;
   // others can only output the pooled inputs.
   virtual inline int MaxBottomBlobs() const {
+    //return (this->layer_param_.unpooling_param().unpool() == UnpoolingParameter_UnpoolMethod_MAX) ? 2 : 1;
     return (this->layer_param_.unpooling_param().unpool() ==
-            UnpoolingParameter_UnpoolMethod_MAX) ? 2 : 1;
+        UnpoolingParameter_UnpoolMethod_UNPOOL_MAX) ? 2 : 1; // Martin Kersner, 2016/01/07
   }
   virtual inline DiagonalAffineMap<Dtype> coord_map() {
     std::cout << "LEGACY UNPOOLING coord_map" << std::endl << std::flush; // Martin Kernser, 2015/12/31
@@ -67,4 +68,4 @@ class UnpoolingLayer : public Layer<Dtype> {
 
 }
 
-#endif  // CAFFE_LEGACY_UNPOOLING_LAYER_HPP__
+#endif  //CAFFE_UNPOOLING_LAYER_HPP_

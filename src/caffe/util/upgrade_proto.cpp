@@ -257,6 +257,8 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
         layer_param->mutable_convolution_param()->add_pad(v0_layer_param.pad());
       } else if (type == "pool") {
         layer_param->mutable_pooling_param()->set_pad(v0_layer_param.pad());
+      } else if (type == "unpool") { // Martin Kersner, 2016/01/07
+        layer_param->mutable_unpooling_param()->set_pad(v0_layer_param.pad());
       } else {
         LOG(ERROR) << "Unknown parameter pad for layer type " << type;
         is_fully_compatible = false;
@@ -266,14 +268,28 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
       if (type == "conv") {
         layer_param->mutable_convolution_param()->add_kernel_size(
             v0_layer_param.kernelsize());
-      } else if (type == "pool") {
+      } else if (type == "pool") { 
         layer_param->mutable_pooling_param()->set_kernel_size(
+            v0_layer_param.kernelsize());
+      } else if (type == "unpool") { // Martin Kersner, 2016/01/07
+        layer_param->mutable_unpooling_param()->set_kernel_size(
             v0_layer_param.kernelsize());
       } else {
         LOG(ERROR) << "Unknown parameter kernelsize for layer type " << type;
         is_fully_compatible = false;
       }
     }
+    // Martin Kersner, 2016/01/07
+    if (v0_layer_param.has_unpoolsize()) {
+      if (type == "unpool") {
+        layer_param->mutable_unpooling_param()->set_unpool_size(
+            v0_layer_param.unpoolsize());
+      } else {
+        LOG(ERROR) << "Unknown parameter unpoolsize for layer type " << type;
+        is_fully_compatible = false;
+      }
+    }
+    // end Martin Kersner, 2016/01/07
     if (v0_layer_param.has_group()) {
       if (type == "conv") {
         layer_param->mutable_convolution_param()->set_group(
@@ -289,6 +305,9 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
             v0_layer_param.stride());
       } else if (type == "pool") {
         layer_param->mutable_pooling_param()->set_stride(
+            v0_layer_param.stride());
+      } else if (type == "unpool") { // Martin Kersner, 2016/01/07
+        layer_param->mutable_unpooling_param()->set_stride(
             v0_layer_param.stride());
       } else {
         LOG(ERROR) << "Unknown parameter stride for layer type " << type;
@@ -320,6 +339,33 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
         is_fully_compatible = false;
       }
     }
+    // Martin Kersner, 2016/01/07
+    if (v0_layer_param.has_unpool()) {
+      if (type == "unpool") {
+        V0LayerParameter_UnpoolMethod unpool = v0_layer_param.unpool();
+        switch (unpool) {
+        case V0LayerParameter_UnpoolMethod_UNPOOL_MAX:
+          layer_param->mutable_unpooling_param()->set_unpool(
+              UnpoolingParameter_UnpoolMethod_UNPOOL_MAX);
+          break;
+        case V0LayerParameter_UnpoolMethod_UNPOOL_AVE:
+          layer_param->mutable_unpooling_param()->set_unpool(
+              UnpoolingParameter_UnpoolMethod_UNPOOL_AVE);
+          break;
+        case V0LayerParameter_UnpoolMethod_UNPOOL_TILE:
+          layer_param->mutable_unpooling_param()->set_unpool(
+              UnpoolingParameter_UnpoolMethod_UNPOOL_TILE);
+          break;
+        default:
+          LOG(ERROR) << "Unknown unpool method " << unpool;
+          is_fully_compatible = false;
+        }
+      } else {
+        LOG(ERROR) << "Unknown parameter unpool for layer type " << type;
+        is_fully_compatible = false;
+      }
+    }
+    // end Martin Kersner, 2016/01/07
     if (v0_layer_param.has_dropout_ratio()) {
       if (type == "dropout") {
         layer_param->mutable_dropout_param()->set_dropout_ratio(
@@ -563,6 +609,8 @@ V1LayerParameter_LayerType UpgradeV0LayerType(const string& type) {
     return V1LayerParameter_LayerType_MULTINOMIAL_LOGISTIC_LOSS;
   } else if (type == "pool") {
     return V1LayerParameter_LayerType_POOLING;
+  } else if (type == "unpool") { // Martin Kersner, 2016/01/07
+    return V1LayerParameter_LayerType_UNPOOLING;
   } else if (type == "relu") {
     return V1LayerParameter_LayerType_RELU;
   } else if (type == "sigmoid") {
@@ -802,6 +850,12 @@ bool UpgradeV1LayerParameter(const V1LayerParameter& v1_layer_param,
     layer_param->mutable_pooling_param()->CopyFrom(
         v1_layer_param.pooling_param());
   }
+  // Martin Kersner, 2016/01/07
+  if (v1_layer_param.has_unpooling_param()) {
+    layer_param->mutable_unpooling_param()->CopyFrom(
+        v1_layer_param.unpooling_param());
+  }
+  // Martin Kersner, 2016/01/07
   if (v1_layer_param.has_power_param()) {
     layer_param->mutable_power_param()->CopyFrom(
         v1_layer_param.power_param());

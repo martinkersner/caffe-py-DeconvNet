@@ -2,11 +2,12 @@
 #include <cfloat>
 #include <vector>
 
-#include "caffe/common.hpp"
-#include "caffe/layer.hpp"
+//#include "caffe/common.hpp" // Martin Kersner, 2016/01/07
+//#include "caffe/layer.hpp" // Martin Kersner, 2016/01/07
 #include "caffe/syncedmem.hpp"
 #include "caffe/util/math_functions.hpp"
-#include "caffe/layers/vision_layers.hpp" // Martin Kersner, 2015/12/16
+//#include "caffe/layers/vision_layers.hpp" // Martin Kersner, 2016/01/07
+#include "caffe/layers/unpooling_layer.hpp" // Martin Kersner, 2016/01/07
 
 namespace caffe {
 
@@ -17,7 +18,6 @@ template <typename Dtype>
 void UnpoolingLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
   UnpoolingParameter unpool_param = this->layer_param_.unpooling_param();
-
   CHECK(!unpool_param.has_kernel_size() !=
     !(unpool_param.has_kernel_h() && unpool_param.has_kernel_w()))
     << "Filter size is kernel_size OR kernel_h and kernel_w; not both";
@@ -62,8 +62,8 @@ void UnpoolingLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
     stride_w_ = unpool_param.stride_w();
   }
   if (pad_h_ != 0 || pad_w_ != 0) {
-    CHECK( unpool_param.unpool()
-        == UnpoolingParameter_UnpoolMethod_MAX)
+    //CHECK( unpool_param.unpool() == UnpoolingParameter_UnpoolMethod_MAX)
+    CHECK( unpool_param.unpool() == UnpoolingParameter_UnpoolMethod_UNPOOL_MAX) // Martin Kersner, 2016/01/07
         << "Padding implemented only for max unpooling.";
     CHECK_LT(pad_h_, kernel_h_);
     CHECK_LT(pad_w_, kernel_w_);
@@ -114,7 +114,8 @@ void UnpoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
   // Different unpooling methods. We explicitly do the switch outside the for
   // loop to save time, although this results in more code.
   switch (this->layer_param_.unpooling_param().unpool()) {
-  case UnpoolingParameter_UnpoolMethod_MAX:
+  //case UnpoolingParameter_UnpoolMethod_MAX:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_MAX: // Martin Kersner, 2016/01/07
     caffe_set(top_count, Dtype(0), top_data);
     // Initialize
     if (use_bottom_mask) {
@@ -146,7 +147,8 @@ void UnpoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       }
     }
     break;
-  case UnpoolingParameter_UnpoolMethod_AVE:
+  //case UnpoolingParameter_UnpoolMethod_AVE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_AVE: // Martin Kersner, 2016/01/07
      // The main loop
     for (int n = 0; n < top[0]->num(); ++n) {
       for (int c = 0; c < channels_; ++c) {
@@ -175,7 +177,8 @@ void UnpoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       }
     }
     break;
-  case UnpoolingParameter_UnpoolMethod_TILE:
+  //case UnpoolingParameter_UnpoolMethod_TILE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_TILE: // Martin Kersner, 2016/01/07
      // The main loop
     for (int n = 0; n < top[0]->num(); ++n) {
       for (int c = 0; c < channels_; ++c) {
@@ -224,7 +227,8 @@ void UnpoolingLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
   const bool use_bottom_mask = bottom.size() > 1;
   const Dtype* bottom_mask = NULL;
   switch (this->layer_param_.unpooling_param().unpool()) {
-  case UnpoolingParameter_UnpoolMethod_MAX:
+  //case UnpoolingParameter_UnpoolMethod_MAX:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_MAX: // Martin Kersner, 2016/01/07
     if (use_bottom_mask) {
       bottom_mask = bottom[1]->cpu_data();
     } 
@@ -254,7 +258,8 @@ void UnpoolingLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
       }
     }
     break;
-  case UnpoolingParameter_UnpoolMethod_AVE:
+  //case UnpoolingParameter_UnpoolMethod_AVE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_AVE: // Martin Kersner, 2016/01/07
     for (int i = 0; i < bottom[0]->count(); ++i) {
       bottom_diff[i] = 0;
     }
@@ -287,7 +292,8 @@ void UnpoolingLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
       }
     }
     break;
-  case UnpoolingParameter_UnpoolMethod_TILE:
+  //case UnpoolingParameter_UnpoolMethod_TILE:
+  case UnpoolingParameter_UnpoolMethod_UNPOOL_TILE: // Martin Kersner, 2016/01/07
     for (int i = 0; i < bottom[0]->count(); ++i) {
       bottom_diff[i] = 0;
     }
@@ -331,6 +337,6 @@ STUB_GPU(UnpoolingLayer);
 #endif
 
 INSTANTIATE_CLASS(UnpoolingLayer);
-REGISTER_LAYER_CLASS(Unpooling); // Martin Kersner, 2015/12/29
+//REGISTER_LAYER_CLASS(Unpooling); // Martin Kersner, 2015/12/29
 
 }  // namespace caffe
