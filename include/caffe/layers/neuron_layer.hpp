@@ -23,8 +23,12 @@ class NeuronLayer : public Layer<Dtype> {
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
 
-  virtual inline int ExactNumBottomBlobs() const { return 1; }
-  virtual inline int ExactNumTopBlobs() const { return 1; }
+  // Martin Kersner, 2016/01/12
+  //virtual inline int ExactNumBottomBlobs() const { return 1; }
+  //virtual inline int ExactNumTopBlobs() const { return 1; }
+  virtual inline int ExactNumTopBlobs() const { return -1; }
+  virtual inline int MinTopBlobs() const { return 1; }
+  virtual inline int MaxTopBlobs() const { return 2; }
 };
 
 }  // namespace caffe
