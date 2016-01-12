@@ -1,7 +1,7 @@
-# Caffe
-
 ## py-deconvnet branch (Martin Kersner)
 Within *py-deconvnet* branch there is a version of caffe which is required by [DeconvNet](https://github.com/martinkersner/py-DeconvNet) and [DecoupledNet](https://github.com/martinkersner/py-DecoupledNet).
+
+# Caffe
 
 [![Build Status](https://travis-ci.org/BVLC/caffe.svg?branch=master)](https://travis-ci.org/BVLC/caffe)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](LICENSE)
